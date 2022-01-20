@@ -1,7 +1,5 @@
 # GEO-FENCING
 
-## A senior capstone project in the department of Computer Science at CU Boulder
-
 Developed By:
 - Henry Wang
 - Andrew McQueary
@@ -10,4 +8,4 @@ Developed By:
 - Liam Hollins
 
 
-In Association with Trimble Inc.
+In Association with Trimble Inc. and The University of Colorado
