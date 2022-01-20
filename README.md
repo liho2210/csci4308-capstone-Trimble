@@ -1,6 +1,6 @@
 # GEO-FENCING
 
-A senior capstone project in the departement of Computer Science
+## A senior capstone project in the departement of Computer Science
 
 Developed By:
 - Henry Wang
