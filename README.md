@@ -1,10 +1,8 @@
-# csci4308-capstone-Trimble
+# GEO-FENCING
 
 Developed By:
-
-Henry Wang
-
-Andrew McQueary
+- Henry Wang
+- Andrew McQueary
 
 Ailish Skinner
 
