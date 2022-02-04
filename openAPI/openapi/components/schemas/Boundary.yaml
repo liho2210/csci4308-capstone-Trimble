@@ -12,3 +12,8 @@ properties:
   polygon:
     type: GeoJson Polygon
     description: Bounding polygon to encapsulate a boundary, must be a valid polygon
+  resources:
+    type: array
+    items:
+      type: integer
+      description: ID of resources belonging to a boundary

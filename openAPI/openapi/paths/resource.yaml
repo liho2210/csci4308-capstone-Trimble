@@ -6,3 +6,8 @@ post:
   responses:
     '200':
       description: OK
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/Resource.yaml
