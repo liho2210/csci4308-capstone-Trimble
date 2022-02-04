@@ -1,0 +1,8 @@
+post:
+  tags:
+    - Event
+  summary: Create Event
+  desription: Creates a Event object give all necessary data is present.
+  responses:
+    '200':
+      description: OK

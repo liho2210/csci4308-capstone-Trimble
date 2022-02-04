@@ -1,0 +1,14 @@
+type: object
+required:
+- name
+- polygon
+properties:
+  name:
+    type: string
+    description: Human redable boundary name
+  description:
+    type: string
+    description: Brief description of boundary's purpose
+  polygon:
+    type: GeoJson Polygon
+    description: Bounding polygon to encapsulate a boundary, must be a valid polygon

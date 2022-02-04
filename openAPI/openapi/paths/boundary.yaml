@@ -1,0 +1,15 @@
+post:
+  tags:
+    - Boundary
+  summary: Create Boundary
+  desription: Creates a Boundary object give all necessary data is present.
+  responses:
+    '200':
+      description: OK
+    '400':
+      dsecription: Invalid Syntax
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/Boundary.yaml
