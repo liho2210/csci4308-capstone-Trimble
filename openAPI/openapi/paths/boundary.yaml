@@ -7,7 +7,7 @@ post:
     '200':
       description: OK
     '400':
-      dsecription: Invalid Syntax
+      desription: Invalid Syntax
   requestBody:
     content:
       application/json:
