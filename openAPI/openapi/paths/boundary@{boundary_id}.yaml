@@ -66,6 +66,7 @@ patch:
           minProperties: 1
           $ref: ../components/schemas/Boundary.yaml
 
+
   responses:
     '200':
       description: Success

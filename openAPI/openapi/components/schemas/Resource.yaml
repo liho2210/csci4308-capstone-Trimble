@@ -1,6 +1,4 @@
 type: object
-required:
-- name
 properties:
   id:
     type: integer
@@ -8,6 +6,8 @@ properties:
   name:
     type: string
     description: Resource name
+  coordinates:
+    type: GeoJson coordinate
   description:
     type: string
     description: Brief description of resource

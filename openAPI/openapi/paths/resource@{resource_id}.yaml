@@ -1,0 +1,66 @@
+get:
+  summary: Fetch Resource
+  tags:
+    - Resource
+  parameters:
+    - name: Resource ID
+      in: path
+      description: ID of the resource you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Resource.yaml
+    '400':
+      description: Path argument is not an integer
+    '404':
+      description: Not found
+patch:
+  summary: Update resource
+  description: For updating specific fields in a Resource object, must include at least 1 of a Resource's properties to overwrite
+  tags:
+    - Resource
+  parameters:
+    - name: Resource ID
+      in: path
+      description: ID of the resource you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          minProperties: 1
+          $ref: ../components/schemas/Resource.yaml
+  responses:
+    '200':
+      description: Success
+    '400':
+      description: Invalid Syntax
+    '404':
+      description: Not found
+delete:
+  summary: Delete resource
+  description: Completely deletes a resource.
+  tags:
+    - Resource
+  parameters:
+    - name: Resource ID
+      in: path
+      description: ID of the resource you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Success
+    '400':
+      description: Invalid Syntax
+    '404':
+      description: Not found

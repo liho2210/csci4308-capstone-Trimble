@@ -29,10 +29,12 @@ servers:
 paths:
   /boundary:
     $ref: 'paths/boundary.yaml'
-  /boundary/{boundaryid}:
+  /boundary/{boundary_id}:
     $ref: 'paths/boundary@{boundary_id}.yaml'
   /resource:
     $ref: 'paths/resource.yaml'
+  /resource/{resource_id}:
+    $ref: 'paths/resource@{resource_id}.yaml'
   /event:
     $ref: 'paths/event.yaml'
   # '/users/{username}':
