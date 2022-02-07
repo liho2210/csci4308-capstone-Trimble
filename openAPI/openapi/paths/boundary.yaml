@@ -12,4 +12,7 @@ post:
     content:
       application/json:
         schema:
+          required:
+          - name
+          - polygon
           $ref: ../components/schemas/Boundary.yaml

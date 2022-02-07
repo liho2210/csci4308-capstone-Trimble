@@ -36,12 +36,15 @@ put:
     content:
       application/json:
         schema:
+          required:
+          - name
+          - polygon
           $ref: ../components/schemas/Boundary.yaml
   responses:
     '200':
       description: Success
     '400':
-      description: Path argument is not an integer
+      description: Invalid Syntax
     '404':
       description: Not found
 patch:
@@ -60,31 +63,14 @@ patch:
     content:
       application/json:
         schema:
-          type: object
           minProperties: 1
-          properties:
-            id:
-              type: integer
-              readOnly: true
-            name:
-              type: string
-              description: Human redable boundary name
-            description:
-              type: string
-              description: Brief description of boundary's purpose
-            polygon:
-              type: GeoJson Polygon
-              description: Bounding polygon to encapsulate a boundary, must be a valid polygon
-            resource_ids:
-              type: array
-              items:
-                type: integer
-                description: ID of resources belonging to a boundary
+          $ref: ../components/schemas/Boundary.yaml
+
   responses:
     '200':
       description: Success
     '400':
-      description: Path argument is not an integer
+      description: Invalid Syntax
     '404':
       description: Not found
 delete:
@@ -103,6 +89,6 @@ delete:
     '200':
       description: Success
     '400':
-      description: Path argument is not an integer
+      description: Invalid Syntax
     '404':
       description: Not found

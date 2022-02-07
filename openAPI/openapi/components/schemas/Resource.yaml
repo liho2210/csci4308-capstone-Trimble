@@ -2,9 +2,21 @@ type: object
 required:
 - name
 properties:
+  id:
+    type: integer
+    readOnly: true
   name:
     type: string
     description: Resource name
   description:
     type: string
     description: Brief description of resource
+  state:
+    type: string
+    description: Short message describing the status of a resource for easy understanding
+  date_created:
+    type: stringDateTime
+    readOnly: true
+  last_modified:
+    type: stringDateTime
+    readOnly: true

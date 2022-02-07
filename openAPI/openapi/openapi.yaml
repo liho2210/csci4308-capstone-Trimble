@@ -20,7 +20,7 @@ tags:
   - name: Boundary
     description: Object to define each Geofencing zone or subzone.
   - name: Resource
-    description: Tangible real world assets that exist within boundaries to be tracked.
+    description: Tangible real world assets to be tracked and monitored.
   - name: Event
     description: Log of all changes to resources and zones.
 servers:

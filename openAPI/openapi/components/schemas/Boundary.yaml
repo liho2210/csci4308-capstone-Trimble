@@ -1,7 +1,4 @@
 type: object
-required:
-- name
-- polygon
 properties:
   id:
     type: integer
