@@ -1,0 +1,108 @@
+get:
+  summary: Fetch Boundary
+  tags:
+    - Boundary
+  parameters:
+    - name: Boundary ID
+      in: path
+      description: ID of the boundary you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Boundary.yaml
+    '400':
+      description: Path argument is not an integer
+    '404':
+      description: Not found
+put:
+  summary: Update boundary
+  description: Replaces entire boundary with information passed
+  tags:
+    - Boundary
+  parameters:
+    - name: Boundary ID
+      in: path
+      description: ID of the boundary you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/Boundary.yaml
+  responses:
+    '200':
+      description: Success
+    '400':
+      description: Path argument is not an integer
+    '404':
+      description: Not found
+patch:
+  summary: Update boundary
+  description: For updating specific fields in a Boundary object, must include at least 1 of a Boundary's properties to overwrite
+  tags:
+    - Boundary
+  parameters:
+    - name: Boundary ID
+      in: path
+      description: ID of the boundary you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          minProperties: 1
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            name:
+              type: string
+              description: Human redable boundary name
+            description:
+              type: string
+              description: Brief description of boundary's purpose
+            polygon:
+              type: GeoJson Polygon
+              description: Bounding polygon to encapsulate a boundary, must be a valid polygon
+            resource_ids:
+              type: array
+              items:
+                type: integer
+                description: ID of resources belonging to a boundary
+  responses:
+    '200':
+      description: Success
+    '400':
+      description: Path argument is not an integer
+    '404':
+      description: Not found
+delete:
+  summary: Delete boundary
+  description: Completely deletes a boundary, but does not touch the resources.
+  tags:
+    - Boundary
+  parameters:
+    - name: Boundary ID
+      in: path
+      description: ID of the boundary you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Success
+    '400':
+      description: Path argument is not an integer
+    '404':
+      description: Not found

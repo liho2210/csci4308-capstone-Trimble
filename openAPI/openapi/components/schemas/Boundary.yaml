@@ -3,6 +3,9 @@ required:
 - name
 - polygon
 properties:
+  id:
+    type: integer
+    readOnly: true
   name:
     type: string
     description: Human redable boundary name
@@ -12,8 +15,14 @@ properties:
   polygon:
     type: GeoJson Polygon
     description: Bounding polygon to encapsulate a boundary, must be a valid polygon
-  resources:
+  resource_ids:
     type: array
     items:
       type: integer
       description: ID of resources belonging to a boundary
+  date_created:
+    type: stringDateTime
+    readOnly: true
+  last_modified:
+    type: stringDateTime
+    readOnly: true
