@@ -31,12 +31,18 @@ paths:
     $ref: 'paths/boundary.yaml'
   /boundary/{boundary_id}:
     $ref: 'paths/boundary@{boundary_id}.yaml'
+  /boundary/{boundary_id}/resource:
+    $ref: 'paths/boundary@{boundary_id}@resource.yaml'
+  /boundary/{boundary_id}/event:
+    $ref: 'paths/boundary@{boundary_id}@event.yaml'
   /resource:
     $ref: 'paths/resource.yaml'
   /resource/{resource_id}:
     $ref: 'paths/resource@{resource_id}.yaml'
   /event:
     $ref: 'paths/event.yaml'
+  /event/{event_id}:
+    $ref: 'paths/event@{event_id}.yaml'
   # '/users/{username}':
   #   $ref: 'paths/users@{username}.yaml'
   # /echo:

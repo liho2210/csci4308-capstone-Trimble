@@ -1,0 +1,50 @@
+post:
+  tags:
+    - Boundary
+  summary: Allocate Resource
+  description: Adds a resource to a boundary's array of resources
+  parameters:
+    - name: Boundary ID
+      in: path
+      description: ID of the boundary you are trying affect
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Invalid Syntax
+    '404':
+      description: Not found
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: integer
+          description: ID of resource to add to boundary
+delete:
+  tags:
+    - Boundary
+  summary: Deallocate Resource
+  description: Removes a resource from a boundary's array of resources
+  parameters:
+    - name: Boundary ID
+      in: path
+      description: ID of the boundary you are trying affect
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Invalid Syntax
+    '404':
+      description: Not found
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: integer
+          description: ID of resource to remove from boundary

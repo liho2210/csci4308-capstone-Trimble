@@ -12,11 +12,21 @@ properties:
   polygon:
     type: GeoJson Polygon
     description: Bounding polygon to encapsulate a boundary, must be a valid polygon
+  metadata:
+    type: array
+    description: Captures any additional necessary information about a boundary
+    maxItems: 10
   resource_ids:
     type: array
+    description: IDs of resources belonging to a boundary
     items:
       type: integer
-      description: ID of resources belonging to a boundary
+  event_log:
+    type: array
+    description: IDs of all event objects that describe a boundary's history
+    items:
+      type: integer
+    readOnly: true
   date_created:
     type: stringDateTime
     readOnly: true

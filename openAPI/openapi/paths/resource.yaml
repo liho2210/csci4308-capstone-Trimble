@@ -12,4 +12,5 @@ post:
         schema:
           required:
           - name
+          - type
           $ref: ../components/schemas/Resource.yaml

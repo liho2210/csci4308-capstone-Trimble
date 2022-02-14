@@ -1,0 +1,351 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Trimble Cloud Geofencing
+  termsOfService: https://example.com/terms/
+  contact:
+    email: contact@example.com
+    url: http://example.com/contact
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  x-logo:
+    url: https://redocly.github.io/openapi-template/logo.png
+  description: >
+    This is an **example** API to demonstrate features of the OpenAPI
+    specification.
+
+
+    # Introduction
+
+
+    This API definition is intended to to be a good starting point for
+
+    describing your API in 
+
+
+    [OpenAPI/Swagger
+
+    format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md).
+
+
+    It also demonstrates features of the
+
+    [create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool
+
+    and 
+
+
+    the [Redoc](https://github.com/Redocly/Redoc) documentation engine. Beyond
+
+    the standard OpenAPI syntax, we use a few 
+
+
+    [vendor
+
+    extensions](https://github.com/Redocly/Redoc/blob/master/docs/redoc-vendor-extensions.md).
+
+
+
+    # OpenAPI Specification
+
+
+    The goal of The OpenAPI Specification is to define a standard,
+
+    language-agnostic interface to REST APIs which
+
+
+    allows both humans and computers to discover and understand the capabilities
+
+    of the service without access to source
+
+
+    code, documentation, or through network traffic inspection. When properly
+
+    defined via OpenAPI, a consumer can 
+
+
+    understand and interact with the remote service with a minimal amount of
+
+    implementation logic. Similar to what
+
+
+    interfaces have done for lower-level programming, OpenAPI removes the
+
+    guesswork in calling the service.
+externalDocs:
+  description: Find out how to create a GitHub repo for your OpenAPI definition.
+  url: https://github.com/Rebilly/generator-openapi-repo
+tags:
+  - name: Boundary
+    description: Object to define each Geofencing zone or subzone.
+  - name: Resource
+    description: Tangible real world assets to be tracked and monitored.
+  - name: Event
+    description: Log of all changes to resources and zones.
+servers:
+  - url: http://example.com/api/v1
+  - url: https://example.com/api/v1
+paths:
+  /boundary:
+    post:
+      tags:
+        - Boundary
+      summary: Create Boundary
+      desription: Creates a Boundary object give all necessary data is present.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid Syntax
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+                - polygon
+              $ref: '#/components/schemas/Boundary'
+  /boundary/{boundary_id}:
+    get:
+      summary: Fetch Boundary
+      tags:
+        - Boundary
+      parameters:
+        - name: Boundary ID
+          in: path
+          description: ID of the boundary you are trying to fetch
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boundary'
+        '400':
+          description: Path argument is not an integer
+        '404':
+          description: Not found
+    put:
+      summary: Update boundary
+      description: Replaces entire boundary with information passed
+      tags:
+        - Boundary
+      parameters:
+        - name: Boundary ID
+          in: path
+          description: ID of the boundary you are trying to fetch
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+                - polygon
+              $ref: '#/components/schemas/Boundary'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid Syntax
+        '404':
+          description: Not found
+    patch:
+      summary: Update boundary
+      description: >-
+        For updating specific fields in a Boundary object, must include at least
+        1 of a Boundary's properties to overwrite
+      tags:
+        - Boundary
+      parameters:
+        - name: Boundary ID
+          in: path
+          description: ID of the boundary you are trying to fetch
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              minProperties: 1
+              $ref: '#/components/schemas/Boundary'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid Syntax
+        '404':
+          description: Not found
+    delete:
+      summary: Delete boundary
+      description: Completely deletes a boundary, but does not touch the resources.
+      tags:
+        - Boundary
+      parameters:
+        - name: Boundary ID
+          in: path
+          description: ID of the boundary you are trying to fetch
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid Syntax
+        '404':
+          description: Not found
+  /resource:
+    post:
+      tags:
+        - Resource
+      summary: Create Resource
+      desription: Creates a Resource object given all necessary data is present.
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+              $ref: '#/components/schemas/Resource'
+  /resource/{resource_id}:
+    get:
+      summary: Fetch Resource
+      tags:
+        - Resource
+      parameters:
+        - name: Resource ID
+          in: path
+          description: ID of the resource you are trying to fetch
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '400':
+          description: Path argument is not an integer
+        '404':
+          description: Not found
+    patch:
+      summary: Update resource
+      description: >-
+        For updating specific fields in a Resource object, must include at least
+        1 of a Resource's properties to overwrite
+      tags:
+        - Resource
+      parameters:
+        - name: Resource ID
+          in: path
+          description: ID of the resource you are trying to fetch
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              minProperties: 1
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid Syntax
+        '404':
+          description: Not found
+    delete:
+      summary: Delete resource
+      description: Completely deletes a resource.
+      tags:
+        - Resource
+      parameters:
+        - name: Resource ID
+          in: path
+          description: ID of the resource you are trying to fetch
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Invalid Syntax
+        '404':
+          description: Not found
+  /event:
+    post:
+      tags:
+        - Event
+      summary: Create Event
+      desription: Creates a Event object give all necessary data is present.
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Boundary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Human redable boundary name
+        description:
+          type: string
+          description: Brief description of boundary's purpose
+        polygon:
+          type: GeoJson Polygon
+          description: Bounding polygon to encapsulate a boundary, must be a valid polygon
+        resource_ids:
+          type: array
+          items:
+            type: integer
+            description: ID of resources belonging to a boundary
+        date_created:
+          type: stringDateTime
+          readOnly: true
+        last_modified:
+          type: stringDateTime
+          readOnly: true
+    Resource:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: Resource name
+        coordinates:
+          type: GeoJson coordinate
+        description:
+          type: string
+          description: Brief description of resource
+        state:
+          type: string
+          description: >-
+            Short message describing the status of a resource for easy
+            understanding
+        date_created:
+          type: stringDateTime
+          readOnly: true
+        last_modified:
+          type: stringDateTime
+          readOnly: true

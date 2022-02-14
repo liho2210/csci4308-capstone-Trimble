@@ -6,6 +6,9 @@ properties:
   name:
     type: string
     description: Resource name
+  type:
+    type: string
+    description: Either personel, material, or vehicle
   coordinates:
     type: GeoJson coordinate
   description:
@@ -14,6 +17,10 @@ properties:
   state:
     type: string
     description: Short message describing the status of a resource for easy understanding
+  metadata:
+    type: array
+    description: Captures any additional necessary information about a resource
+    maxItems: 10
   date_created:
     type: stringDateTime
     readOnly: true
