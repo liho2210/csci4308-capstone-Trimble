@@ -8,18 +8,18 @@ properties:
     description: Resource name
   type:
     type: string
-    description: Either personel, material, or vehicle
+    enum: [personel,material,vehicle]
+    description: Defines some of the expected form of metadata
+  state:
+    type: string
+    description: Short message describing the status of a resource for easy understanding
   coordinates:
     type: GeoJson coordinate
   description:
     type: string
     description: Brief description of resource
-  state:
-    type: string
-    description: Short message describing the status of a resource for easy understanding
   metadata:
-    type: array
-    description: Captures any additional necessary information about a resource
+    type: object
     maxItems: 10
   date_created:
     type: stringDateTime
