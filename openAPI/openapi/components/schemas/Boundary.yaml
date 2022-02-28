@@ -10,7 +10,8 @@ properties:
     type: string
     description: Brief description of boundary's purpose
   polygon:
-    type: GeoJson Polygon
+    type: string
+    format: GeoJson
     description: Bounding polygon to encapsulate a boundary, must be a valid polygon
   resource_ids:
     type: array
@@ -28,8 +29,10 @@ properties:
       type: integer
     readOnly: true
   date_created:
-    type: stringDateTime
+    type: string
+    format: date-time
     readOnly: true
   last_modified:
-    type: stringDateTime
+    type: string
+    format: date-time
     readOnly: true

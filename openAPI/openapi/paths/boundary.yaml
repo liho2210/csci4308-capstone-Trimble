@@ -2,7 +2,8 @@ post:
   tags:
     - Boundary
   summary: Create Boundary
-  desription: Creates a Boundary object give all necessary data is present.
+  operationId: create_boundary
+  description: Creates a Boundary object give all necessary data is present.
   responses:
     '200':
       description: OK

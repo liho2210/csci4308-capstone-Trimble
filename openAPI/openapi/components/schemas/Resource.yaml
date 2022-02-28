@@ -14,7 +14,8 @@ properties:
     type: string
     description: Short message describing the status of a resource for easy understanding
   coordinates:
-    type: GeoJson coordinate
+    type: string
+    format: GeoJson
   description:
     type: string
     description: Brief description of resource
@@ -22,8 +23,10 @@ properties:
     type: object
     maxItems: 10
   date_created:
-    type: stringDateTime
+    type: string
+    format: date-time
     readOnly: true
   last_modified:
-    type: stringDateTime
+    type: string
+    format: date-time
     readOnly: true

@@ -1,9 +1,10 @@
 get:
   summary: Fetch Boundary
+  operationId: get_boundary
   tags:
     - Boundary
   parameters:
-    - name: Boundary ID
+    - name: boundary_id
       in: path
       description: ID of the boundary you are trying to fetch
       required: true
@@ -22,11 +23,12 @@ get:
       description: Not found
 put:
   summary: Update boundary
+  operationId: put_boundary
   description: Replaces entire boundary with information passed
   tags:
     - Boundary
   parameters:
-    - name: Boundary ID
+    - name: boundary_id
       in: path
       description: ID of the boundary you are trying to fetch
       required: true
@@ -49,11 +51,12 @@ put:
       description: Not found
 patch:
   summary: Update boundary
+  operationId: patch_boundary
   description: For updating specific fields in a Boundary object, must include at least 1 of a Boundary's properties to overwrite
   tags:
     - Boundary
   parameters:
-    - name: Boundary ID
+    - name: boundary_id
       in: path
       description: ID of the boundary you are trying to fetch
       required: true
@@ -76,11 +79,12 @@ patch:
       description: Not found
 delete:
   summary: Delete boundary
+  operationId: delete_boundary
   description: Completely deletes a boundary, but does not touch the resources.
   tags:
     - Boundary
   parameters:
-    - name: Boundary ID
+    - name: boundary_id
       in: path
       description: ID of the boundary you are trying to fetch
       required: true

@@ -1,9 +1,10 @@
 get:
   summary: Fetch Resource
+  operationId: get_resource
   tags:
     - Resource
   parameters:
-    - name: Resource ID
+    - name: resource_id
       in: path
       description: ID of the resource you are trying to fetch
       required: true
@@ -22,11 +23,12 @@ get:
       description: Not found
 patch:
   summary: Update resource
+  operationId: patch_resource
   description: For updating specific fields in a Resource object, must include at least 1 of a Resource's properties to overwrite
   tags:
     - Resource
   parameters:
-    - name: Resource ID
+    - name: resource_id
       in: path
       description: ID of the resource you are trying to fetch
       required: true
@@ -47,11 +49,12 @@ patch:
       description: Not found
 delete:
   summary: Delete resource
+  operationId: delete_resource
   description: Completely deletes a resource.
   tags:
     - Resource
   parameters:
-    - name: Resource ID
+    - name: resource_id
       in: path
       description: ID of the resource you are trying to fetch
       required: true

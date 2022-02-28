@@ -11,5 +11,6 @@ properties:
     description: All necessary information about an event
     maxItems: 10
   date_created:
-    type: stringDateTime
+    type: string
+    format: date-time
     readOnly: true

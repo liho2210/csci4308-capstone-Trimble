@@ -2,10 +2,13 @@ post:
   tags:
     - Resource
   summary: Create Resource
-  desription: Creates a Resource object given all necessary data is present.
+  operationId: create_resource
+  description: Creates a Resource object given all necessary data is present.
   responses:
     '200':
       description: OK
+    '400':
+      description: Invalid Syntax
   requestBody:
     content:
       application/json:

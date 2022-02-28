@@ -2,9 +2,10 @@ post:
   tags:
     - Boundary
   summary: Allocate Resource
+  operationId: allocate_resource_to_boundary
   description: Adds a resource to a boundary's array of resources
   parameters:
-    - name: Boundary ID
+    - name: boundary_id
       in: path
       description: ID of the boundary you are trying affect
       required: true
@@ -27,9 +28,10 @@ delete:
   tags:
     - Boundary
   summary: Deallocate Resource
+  operationId: deallocate_resource_to_boundary
   description: Removes a resource from a boundary's array of resources
   parameters:
-    - name: Boundary ID
+    - name: boundary_id
       in: path
       description: ID of the boundary you are trying affect
       required: true
