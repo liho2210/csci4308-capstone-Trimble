@@ -3,7 +3,7 @@ post:
     - Boundary
   summary: Add Event
   operationId: add_event_to_boundary
-  description: Adds an event to a boundaries log of events
+  description: Adds a single event to a boundary's log of events
   parameters:
     - name: boundary_id
       in: path

@@ -15,7 +15,7 @@ properties:
     description: Short message describing the status of a resource for easy understanding
   coordinates:
     type: string
-    format: GeoJson
+    format: GeoJson Coordinate
   description:
     type: string
     description: Brief description of resource

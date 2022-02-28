@@ -213,7 +213,7 @@ paths:
         - Boundary
       summary: Allocate Resource
       operationId: allocate_resource_to_boundary
-      description: Adds a resource to a boundary's array of resources
+      description: Adds a single resource to a boundary's array of resources
       parameters:
         - name: boundary_id
           in: path
@@ -266,7 +266,7 @@ paths:
         - Boundary
       summary: Add Event
       operationId: add_event_to_boundary
-      description: Adds an event to a boundaries log of events
+      description: Adds a single event to a boundary's log of events
       parameters:
         - name: boundary_id
           in: path
@@ -438,23 +438,23 @@ components:
           description: Brief description of boundary's purpose
         polygon:
           type: string
-          format: GeoJson
+          format: GeoJson Polygon
           description: Bounding polygon to encapsulate a boundary, must be a valid polygon
         resource_ids:
           type: array
           description: IDs of resources belonging to a boundary
           items:
             type: integer
-        metadata:
-          type: object
-          description: Captures any additional necessary information about a boundary
-          maxItems: 10
         event_log:
           type: array
           description: IDs of all event objects that describe a boundary's history
           items:
             type: integer
           readOnly: true
+        metadata:
+          type: object
+          description: Captures any additional necessary information about a boundary
+          maxItems: 10
         date_created:
           type: string
           format: date-time
@@ -486,7 +486,7 @@ components:
             understanding
         coordinates:
           type: string
-          format: GeoJson
+          format: GeoJson Coordinate
         description:
           type: string
           description: Brief description of resource
