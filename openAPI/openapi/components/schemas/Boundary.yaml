@@ -1,7 +1,8 @@
 type: object
 properties:
-  id:
-    type: integer
+  date_created:
+    type: string
+    format: date-time
     readOnly: true
   name:
     type: string
@@ -18,19 +19,15 @@ properties:
     description: IDs of resources belonging to a boundary
     items:
       type: integer
+  metadata:
+    type: object
+    description: Captures any additional necessary information about a boundary
+    maxItems: 10
   event_log:
     type: array
     description: IDs of all event objects that describe a boundary's history
     items:
       type: integer
-    readOnly: true
-  metadata:
-    type: object
-    description: Captures any additional necessary information about a boundary
-    maxItems: 10
-  date_created:
-    type: string
-    format: date-time
     readOnly: true
   last_modified:
     type: string

@@ -1,7 +1,8 @@
 type: object
 properties:
-  id:
-    type: integer
+  date_created:
+    type: string
+    format: date-time
     readOnly: true
   name:
     type: string
@@ -22,10 +23,6 @@ properties:
   metadata:
     type: object
     maxItems: 10
-  date_created:
-    type: string
-    format: date-time
-    readOnly: true
   last_modified:
     type: string
     format: date-time
