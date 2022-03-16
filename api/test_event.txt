@@ -1,0 +1,11 @@
+{
+  "name": "Boulder Project Boundary",
+  "description": "Located on Colorado and 30th",
+  "polygon": "{15,4,3}",
+  "resource_ids": [
+    0
+  ],
+  "metadata": {
+    "status": "in progress"
+  }
+}
