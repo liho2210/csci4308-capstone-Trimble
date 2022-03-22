@@ -1,8 +1,7 @@
 type: object
 properties:
-  date_created:
+  id:
     type: string
-    format: date-time
     readOnly: true
   name:
     type: string
@@ -28,6 +27,10 @@ properties:
     description: IDs of all event objects that describe a boundary's history
     items:
       type: integer
+    readOnly: true
+  date_created:
+    type: string
+    format: date-time
     readOnly: true
   last_modified:
     type: string

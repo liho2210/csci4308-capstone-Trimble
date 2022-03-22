@@ -9,7 +9,7 @@ get:
       description: ID of the boundary you are trying to fetch
       required: true
       schema:
-        type: integer
+        type: string
   responses:
     '200':
       description: Success

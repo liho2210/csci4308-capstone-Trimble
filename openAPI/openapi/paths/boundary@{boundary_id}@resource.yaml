@@ -10,7 +10,7 @@ post:
       description: ID of the boundary you are trying affect
       required: true
       schema:
-        type: integer
+        type: string
   responses:
     '200':
       description: OK

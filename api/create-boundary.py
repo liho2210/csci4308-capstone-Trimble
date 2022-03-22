@@ -2,12 +2,17 @@ import json
 import boto3
 from datetime import datetime
 
+
 dynamodb = boto3.resource('dynamodb')
 boundary_table = dynamodb.Table('boundary')
 
 def lambda_handler(event, context):
     valid = True
     time = str(datetime.now())
+    description=''
+    resource_ids=[]
+    event_log=[]
+    metadata=str({})
     #required field
     if event['name']:
         name = event['name']
@@ -19,7 +24,9 @@ def lambda_handler(event, context):
 
     #required field
     if event['polygon']:
-        polygon = event['polygon']
+        polygon=[]
+        for coord in event['polygon'] :
+            polygon.append(str(coord))
     else :
         valid = False
 
@@ -29,18 +36,17 @@ def lambda_handler(event, context):
     if event['metadata']:
         metadata = event['metadata']
 
-    #Make sure they polygon is valid
-
     if valid:
         boundary_table.put_item(
             Item={
-                'date_created': time,
+                'id': name + "-" + time,
                 'name': name,
                 'description': description,
                 'polygon': polygon,
                 'resource_ids': resource_ids,
                 'metadata': metadata,
-                'event_log': [],
+                'event_log': event_log,
+                'date_created': time,
                 'last_modified': time
             }
         )
