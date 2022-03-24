@@ -1,6 +1,7 @@
 import json
 import boto3
 import uuid
+from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('boundary')
@@ -48,39 +49,103 @@ def point_inside_polygon(x, y, poly, include_edges=True):
 
     return inside
 
+def get_update_params(body):
 
-def lambda_handler(event, context):
-    boundary_id = "CU Campus-2022-03-23 03:16:40.143632"
+    update_expression = ["set "]
+    update_values = dict()
+
+    for key, val in body.items():
+        update_expression.append(f" {key} = :{key},")
+        update_values[f":{key}"] = val
+
+    return "".join(update_expression)[:-1], update_values
+
+
+def update_data(data, payload):
     new_coords = []
-    body = event['body']
-    payload = json.loads(body)
-
+    boundary_id = payload['boundary_id']
     try:
         x = table.get_item(Key={'id': boundary_id})
 
         if 'Item' not in x:
-            return render(400, message='Boundary does not exist.')
+            return render(400, text='Boundary does not exist.')
             
         boundary_polygon = x['Item'].get('polygon')
-
+        
         for coord in boundary_polygon:
             new_coords.append(tuple(json.loads(coord)))
         
         for point in payload['polygon']:
             x,y = float(point[0]), float(point[1])
             if not point_inside_polygon(x,y, new_coords):
-                return render(400, message='Zone not in Boundary')
+                return render(400, text='Zone not in Boundary')
+        
+        d = {
+            'description': payload.get('description', ''),
+            'polygon': str(payload['polygon']),
+        }
+        a,v = get_update_params(d)
+        
+        zone_table.update_item(
+            Key={
+                'id': data['id']
+            },
+            UpdateExpression=a,
+            ExpressionAttributeValues=dict(v)
+        )
+        
+    except Exception as e:
+        raise Exception(e)
+
+def insert_data(payload):
+    new_coords = []
+    boundary_id = payload['boundary_id']
+    try:
+        x = table.get_item(Key={'id': boundary_id})
+
+        if 'Item' not in x:
+            return render(400, text='Boundary does not exist.')
+            
+        boundary_polygon = x['Item'].get('polygon')
+        
+        for coord in boundary_polygon:
+            new_coords.append(tuple(json.loads(coord)))
+        
+        for point in payload['polygon']:
+            x,y = float(point[0]), float(point[1])
+            if not point_inside_polygon(x,y, new_coords):
+                return render(400, text='Zone not in Boundary')
         
         zone_table.put_item(
             Item={
                 'id': str(uuid.uuid4()),
-                'name': payload['zone_id'],
-                'description': 'Farrand Field',
+                'zone_id': payload['zone_id'],
+                'description': payload.get('description', ''),
                 'polygon': str(payload['polygon']),
-                'boundary_id': boundary_id
+                'boundary_id': payload['boundary_id']
             }
         )
         
+    except Exception as e:
+        raise Exception(e)
+    
+def lambda_handler(event, context):
+    body = event['body']
+    payload = json.loads(body)
+    boundary_id = payload.get('boundary_id')
+    zone_id = payload.get('zone_id')
+    
+    try:
+        data = zone_table.query (
+            IndexName='boundary-zone-index',
+            KeyConditionExpression=Key('boundary_id').eq(boundary_id) &  Key('zone_id').eq(zone_id)
+        )
+        print(data)
+        if data['Items']:
+            update_data(data=data['Items'][0], payload=payload)
+        else:
+            insert_data(payload)
+
     except Exception as e:
         raise Exception(e)
     
