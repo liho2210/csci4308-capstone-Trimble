@@ -17,9 +17,9 @@ def render(status_code, text=None, content=None):
     }
 
 def lambda_handler(event, context):
-    pp = event['pathParameters']
-    boundary_id = pp['boundary_id']
-    zone_id = pp.get('zone_id')
+    params = event['pathParameters']
+    boundary_id = params['boundary_id']
+    zone_id = params.get('zone_id')
     
     response = []
     
