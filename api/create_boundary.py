@@ -19,23 +19,31 @@ def render(status_code, text=None, content=None):
     }
 
 def lambda_handler(event, context):
+    body = event['body']
+    payload = json.loads(body)
     try:
-        name = event.get('name')
+        if payload.get('name') is not None:
+            name = str(payload.get('name'))
+        else:
+            return render(400,text='Boundary must include name')
 
-        if event.get('description') is not None:
-            description = event.get('description')
+        if payload.get('description') is not None:
+            description = str(payload.get('description'))
         else:
             description = str()
 
-        polygon = sevent.get('polygon')
+        if payload.get('polygon') is not None:
+            polygon = str(payload.get('polygon'))
+        else:
+            return render(400,text='Boundary must include polygon')
 
-        if event.get('resource_ids') is not None:
-            resource_ids = event.get('resource_ids')
+        if payload.get('resource_ids') is not None:
+            resource_ids = payload.get('resource_ids')
         else :
             resource_ids = list()
 
-        if event.get('metadata') is not None:
-            metadata = event.get('metadata')
+        if payload.get('metadata') is not None:
+            metadata = payload['metadata']
         else:
             metadata = dict()
 
@@ -57,4 +65,4 @@ def lambda_handler(event, context):
         )
         return render(200, text="OK")
     except Exception as e:
-        return render(400, text="Invalid Syntax")
+        return render(500, text="Server Error")

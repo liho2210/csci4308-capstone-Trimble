@@ -1,8 +1,7 @@
 {
-  "name": "Boulder Project Boundary",
-  "description": "Located on Colorado and 30th",
+  "name": "Random boundary",
+  "description": "This is a random polygon",
   "polygon": "[[2.38, 57.322], [23.194, -20.28], [-120.43, 19.15], [2.38, 57.322]]",
-  "resource_ids": [],
   "metadata": {
     "status": "in progress"
   }
