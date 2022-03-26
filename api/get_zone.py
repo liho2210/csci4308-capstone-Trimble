@@ -42,7 +42,10 @@ def lambda_handler(event, context):
             }
             response.append(d)
         
+        if not response:
+            return render(500, text='Get zones from boundary Failed.')
+
     except Exception as e:
-        return render(500,'Get zones from boundary Failed.')
+        raise Exception(e)
     
     return render(200, content=response)
