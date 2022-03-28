@@ -1,0 +1,320 @@
+openapi: 3.0.1
+info:
+  title: Trimble Cloud Geofencing
+  version: "2022-03-26T03:31:18Z"
+servers:
+- url: https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev
+paths:
+  /boundary:
+    post:
+      tags:
+      - boundary
+      summary: Create a boundary
+      responses:
+        200:
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+  /boundary/{boundary_id}:
+    get:
+      tags:
+      - boundary
+      summary: Create a boundary
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+  /resource:
+    post:
+      tags:
+      - resource
+      summary: Add a new resource
+      requestBody:
+        description: Resource objects that need to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+        required: true
+      responses:
+        200:
+          description: Ok
+          content: {}
+      x-codegen-request-body-name: body
+  /resource/{resource_name}:
+    get:
+      tags:
+      - resource
+      summary: Find resource by resource name
+      parameters:
+      - name: resource_name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+    delete:
+      tags:
+      - resource
+      summary: Delete a resource
+      parameters:
+      - name: resource_name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+    options:
+      parameters:
+      - name: resource_name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+  /zone:
+    post:
+      tags:
+      - zone
+      summary: Add a zone to a boundary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/zone'
+        required: true
+      responses:
+        200:
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+      x-codegen-request-body-name: zone
+  /zone/boundaries:
+    options:
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+  /zone/boundaries/{boundary_id}:
+    get:
+      tags:
+      - zone
+      summary: Find zones by the boundary
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/zone'
+    options:
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+  /zone/boundaries/{boundary_id}/zones:
+    options:
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+  /zone/boundaries/{boundary_id}/zones/{zone_id}:
+    get:
+      tags:
+      - zone
+      summary: Find a zone by its boundary and zone
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/zone'
+    options:
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Empty'
+components:
+  schemas:
+    Empty:
+      title: Empty Schema
+      type: object
+    zone:
+      required:
+      - boundary_id
+      - polygon
+      - zone_id
+      type: object
+      properties:
+        zone_id:
+          type: string
+        boundary_id:
+          type: string
+        polygon:
+          type: array
+          items:
+            type: string
+    Resource:
+      required:
+      - amount
+      - resource
+      - resource_status
+      - resource_type
+      type: object
+      properties:
+        resource:
+          type: string
+          example: wood
+        resource_type:
+          type: string
+          example: material
+        resource_status:
+          type: string
+          example: arrived
+        amount:
+          type: string
+          example: "5"
+        boundary_id:
+          type: string
+          example: CU Boulder
+        zone_id:
+          type: string
+          example: "002"
+        description:
+          type: string
