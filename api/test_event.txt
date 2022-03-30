@@ -1,7 +1,7 @@
 {
-  "name": "Random boundary",
-  "description": "This is a random polygon",
-  "polygon": "[[2.38, 57.322], [23.194, -20.28], [-120.43, 19.15], [2.38, 57.322]]",
+  "name": "Folsom Field Project",
+  "description": "This polygon roughly encapsulates folsom field",
+  "polygon": "[[-105.268026, 40.008357], [-105.267992, 40.010473], [-105.265692, 40.010451], [-105.265626, 40.008405]]",
   "metadata": {
     "status": "in progress"
   }
