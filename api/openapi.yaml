@@ -8,15 +8,39 @@ paths:
   /boundary:
     post:
       tags:
+        - Boundary
+      summary: Create a New Boundary
+      operationId: create_boundary
+      description: The request body only requires a name, and a polygon field. The proper format for the polygon is a string of the shape "[[1,3],[1,2],[1,4]]" and must be a valid Polygon.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid Syntax
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - polygon
+              $ref: '#/components/schemas/Boundary'
+    get:
+      tags:
       - boundary
-      summary: Create a boundary
+      summary: Get all boundaries
+      description: Returns a list of all boundary objects
       responses:
         200:
-          description: 200 response
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Empty'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Boundary'
+
+
   /boundary/{boundary_id}:
     get:
       tags:
@@ -30,11 +54,52 @@ paths:
           type: string
       responses:
         200:
-          description: 200 response
+          description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Empty'
+                $ref: '#/components/schemas/Boundary'
+        404:
+          description: Not Found
+    patch:
+      tags:
+      - boundary
+      summary: Update a boundary
+      description: Updates the boundary object based on what is included in the body. This method will replace the stored values with the values you include
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boundary'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Invalid Syntax
+        404:
+          description: Not Found
+    delete:
+      tags:
+      - boundary
+      summary: Delete a boundary
+      description: Removes boundary passed in path
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+        404:
+          description: Not Found
   /resource:
     post:
       tags:
@@ -275,6 +340,41 @@ components:
     Empty:
       title: Empty Schema
       type: object
+    Boundary:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: 54f6d866-5fec-4180-8ba8-853818d53a6a
+        name:
+          type: string
+          description: Human redable boundary name
+          example: Folsom Field
+        description:
+          type: string
+          description: Brief description of boundary's purpose
+          example: These coordinates roughly outline folsom field
+        polygon:
+          type: string
+          format: GeoJson Polygon
+          description: Bounding polygon to encapsulate a boundary, must be a valid polygon
+          example: "[[-105.268026, 40.008357], [-105.267992, 40.010473], [-105.265692, 40.010451], [-105.265626, 40.008405]]"
+        metadata:
+          type: object
+          description: Captures any additional necessary information about a boundary
+          example: {status: In Progress}
+          maxItems: 10
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
+        last_modified:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
     zone:
       required:
       - boundary_id
