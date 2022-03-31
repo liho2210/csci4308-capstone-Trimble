@@ -8,7 +8,7 @@ paths:
   /boundary:
     post:
       tags:
-        - Boundary
+        - boundary
       summary: Create a New Boundary
       operationId: create_boundary
       description: The request body only requires a name, and a polygon field. The proper format for the polygon is a string of the shape "[[1,3],[1,2],[1,4]]" and must be a valid Polygon.
