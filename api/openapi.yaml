@@ -45,7 +45,7 @@ paths:
     get:
       tags:
       - boundary
-      summary: Create a boundary
+      summary: Get a boundary
       parameters:
       - name: boundary_id
         in: path
