@@ -30,7 +30,7 @@ def lambda_handler(event, context):
         if payload.get('description') is not None:
             description = str(payload.get('description'))
         else:
-            description = str()
+            description = ""
 
         if payload.get('polygon') is not None:
             polygon = str(payload.get('polygon'))
@@ -40,7 +40,7 @@ def lambda_handler(event, context):
         if payload.get('metadata') is not None:
             metadata = payload['metadata']
         else:
-            metadata = dict()
+            metadata = {}
 
         time = str(datetime.now())
 
