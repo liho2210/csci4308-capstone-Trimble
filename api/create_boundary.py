@@ -37,17 +37,11 @@ def lambda_handler(event, context):
         else:
             return render(400,text='Boundary must include polygon')
 
-        if payload.get('resource_ids') is not None:
-            resource_ids = payload.get('resource_ids')
-        else :
-            resource_ids = list()
-
         if payload.get('metadata') is not None:
             metadata = payload['metadata']
         else:
             metadata = dict()
 
-        event_log = list()
         time = str(datetime.now())
 
         boundary_table.put_item(
@@ -56,9 +50,7 @@ def lambda_handler(event, context):
                 'name': name,
                 'description': description,
                 'polygon': polygon,
-                'resource_ids': resource_ids,
                 'metadata': metadata,
-                'event_log': event_log,
                 'date_created': time,
                 'last_modified': time
             }
