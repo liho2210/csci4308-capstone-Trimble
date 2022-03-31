@@ -88,7 +88,7 @@ paths:
       tags:
       - boundary
       summary: Delete a boundary
-      description: Removes boundary passed in path
+      description: Removes boundary passed in path and its associated zones. Will not delete if resources exist that still point to this boundary.
       parameters:
       - name: boundary_id
         in: path
@@ -98,6 +98,8 @@ paths:
       responses:
         200:
           description: Ok
+        400:
+          description: All resources pointing to this boundary must be updated or deleted.
         404:
           description: Not Found
   /resource:
