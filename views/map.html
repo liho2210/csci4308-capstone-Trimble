@@ -1,21 +1,38 @@
-<!Doctype Html>  
-<Html>     
-<Head> 
-     <link rel="stylesheet" href="style.css">
-<Title>     
-Call a JavaScript function  
-</Title>  
-<script type = "text/javascript">  
-         function Map() {  
-            alert("You are Successfully Called the JavaScript function");  
-         }  
-</script>  
-</Head>  
-<Body>   
-<p>Click on the following button for calling the function: </p>        
-      <form>  
-         <input type = "button" onclick = "Map()" value = "Message Print">   
-      </form>       
-      <p>  
-</Body>   
-</Html>  
+<!-- Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. -->
+<!-- SPDX-License-Identifier: MIT-0 -->
+<html>
+  <head>
+    <link
+      href="https://unpkg.com/maplibre-gl@1/dist/maplibre-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div id="map" style="height: 400px; width: 650px;"/>
+    <script src="https://unpkg.com/maplibre-gl@1"></script>
+    <script src="https://unpkg.com/amazon-location-helpers@1"></script>
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.937.0.min.js"></script>
+    <script>
+      async function initializeMap() {
+        const map = await AmazonLocation.createMap(
+          {
+            identityPoolId: "YOUR_IDENTITY_POOL_ID",
+          },
+          {
+            container: "map",
+            center: [-123.1187, 49.2819], // initial map center point
+            zoom: 10, // initial map zoom
+            style: "YOUR_MAP_NAME",
+            hash: true,
+          }
+        );
+
+        map.addControl(new maplibregl.NavigationControl(), "top-left");
+		
+      }
+
+      initializeMap();
+    </script>
+  </body>
+</html>
