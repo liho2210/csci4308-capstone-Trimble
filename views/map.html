@@ -42,6 +42,21 @@ Amplify.configure({
   }
 });
   
+ async function initializeMap() {
+  const map = await createMap(
+    {
+      container: "map",
+      center: [-123.1187, 49.2819],
+      zoom: 10,
+      hash: true,
+    }
+  );
+
+  map.addControl(new maplibregl.NavigationControl(), "top-left");
+}
+
+initializeMap();
+  
   
 </script>
   
