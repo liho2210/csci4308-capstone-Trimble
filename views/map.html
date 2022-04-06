@@ -12,7 +12,37 @@
     <script src="https://cdn.amplify.aws/packages/geo/1.1.0/aws-amplify-geo.min.js" integrity="sha384-TFMTyWuCbiptXTzvOgzJbV8TPUupG1rA1AVrznAhCSpXTIdGw82bGd8RTk5rr3nP" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.amplify.aws/packages/maplibre-gl-js-amplify/1.1.0/maplibre-gl-js-amplify.umd.min.js" integrity="sha384-7/RxWonKW1nM9zCKiwU9x6bkQTjldosg0D1vZYm0Zj+K/vUSnA3sOMhlRRWAtHPi" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-  // application-specific code
+  // Cognito Identity Pool ID
+const identityPoolId = "region:identityPoolID"; // for example: us-east-1:123example-1234-5678
+// extract the Region from the Identity Pool ID
+const region = identityPoolId.split(":")[0];
+  
+  
+  // Configure Amplify
+const { Amplify } = aws_amplify_core;
+const { createMap } = AmplifyMapLibre;
+
+Amplify.configure({
+  Auth: {
+    identityPoolId,
+    region,
+  },
+  geo: {
+    AmazonLocationService: {
+      maps: {
+        items: {
+          "explore.map": {
+            style: "Default style"
+          },
+        },
+        default: "explore.map",
+      },
+      region,
+    },
+  }
+});
+  
+  
 </script>
   
   
