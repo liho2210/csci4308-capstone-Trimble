@@ -65,7 +65,7 @@ paths:
       tags:
       - boundary
       summary: Update a boundary
-      description: Updates the boundary object based on what is included in the body. This method will replace the stored values with the values you include
+      description: Updates the boundary object based on what is included in the body. This method will replace the stored values with the values you include. If you include the metadata key, the metadata object will be compeletely replaced.
       parameters:
       - name: boundary_id
         in: path
