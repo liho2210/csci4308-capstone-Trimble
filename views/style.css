@@ -289,3 +289,17 @@ body {
   padding: 14px 16px;
   /* text-decoration: none; */
 }
+
+/*MAP STYLES*/
+#locations {
+  display: inline-block;
+  display: inline;
+}
+
+li {
+  padding: 5px;
+  display: inline-block;
+  margin: 20px;
+}
+
+
