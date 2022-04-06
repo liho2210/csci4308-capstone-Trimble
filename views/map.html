@@ -1,38 +1,20 @@
-<!-- Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. -->
-<!-- SPDX-License-Identifier: MIT-0 -->
+<!DOCTYPE html>
 <html>
   <head>
-    <link
-      href="https://unpkg.com/maplibre-gl@1/dist/maplibre-gl.css"
-      rel="stylesheet"
-    />
+    <title>Add Map</title>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script src="./index.js"></script>
   </head>
-
   <body>
-    <div id="map" style="height: 400px; width: 650px;"/>
-    <script src="https://unpkg.com/maplibre-gl@1"></script>
-    <script src="https://unpkg.com/amazon-location-helpers@1"></script>
-	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.937.0.min.js"></script>
-    <script>
-      async function initializeMap() {
-        const map = await AmazonLocation.createMap(
-          {
-            identityPoolId: "YOUR_IDENTITY_POOL_ID",
-          },
-          {
-            container: "map",
-            center: [-123.1187, 49.2819], // initial map center point
-            zoom: 10, // initial map zoom
-            style: "YOUR_MAP_NAME",
-            hash: true,
-          }
-        );
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
 
-        map.addControl(new maplibregl.NavigationControl(), "top-left");
-		
-      }
-
-      initializeMap();
-    </script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&v=weekly"
+      async
+    ></script>
   </body>
 </html>
