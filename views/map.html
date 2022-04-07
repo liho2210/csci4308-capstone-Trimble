@@ -1,15 +1,11 @@
 <html>
   <head>
-    <!-- CSS dependencies -->
     <link href="https://cdn.amplify.aws/packages/maplibre-gl/1.15.2/maplibre-gl.css" rel="stylesheet" integrity="sha384-DrPVD9GufrxGb7kWwRv0CywpXTmfvbKOZ5i5pN7urmIThew0zXKTME+gutUgtpeD" crossorigin="anonymous" referrerpolicy="no-referrer"></link>
-
-    <!-- JavaScript dependencies -->
     <script src="https://cdn.amplify.aws/packages/maplibre-gl/1.15.2/maplibre-gl.js" integrity="sha384-rwYfkmAOpciZS2bDuwZ/Xa/Gog6jXem8D/whm3wnsZSVFemDDlprcUXHnDDUcrNU" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.amplify.aws/packages/core/4.3.0/aws-amplify-core.min.js" integrity="sha384-7Oh+5w0l7XGyYvSqbKi2Q7SA5K640V5nyW2/LEbevDQEV1HMJqJLA1A00z2hu8fJ" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.amplify.aws/packages/auth/4.3.8/aws-amplify-auth.min.js" integrity="sha384-jfkXCEfYyVmDXYKlgWNwv54xRaZgk14m7sjeb2jLVBtUXCD2p+WU8YZ2mPZ9Xbdw" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.amplify.aws/packages/geo/1.1.0/aws-amplify-geo.min.js" integrity="sha384-TFMTyWuCbiptXTzvOgzJbV8TPUupG1rA1AVrznAhCSpXTIdGw82bGd8RTk5rr3nP" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.amplify.aws/packages/maplibre-gl-js-amplify/1.1.0/maplibre-gl-js-amplify.umd.min.js" integrity="sha384-7/RxWonKW1nM9zCKiwU9x6bkQTjldosg0D1vZYm0Zj+K/vUSnA3sOMhlRRWAtHPi" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <style>
       body { margin: 0; }
       #map { height: 100vh; }
@@ -19,31 +15,25 @@
   <body>
     <div id="map" />
     <script type="module">
-      // Cognito Identity Pool ID
-      const identityPoolId = "us-east-1:3f29de31-1934-4cb2-8b84-6b70b2c7b3b8"; // for example: us-east-1:123example-1234-5678
-      // extract the Region from the Identity Pool ID
-      const region = identityPoolId.split(":")[0];
-
-      // Configure Amplify
       const { Amplify } = aws_amplify_core;
       const { createMap } = AmplifyMapLibre;
 
       Amplify.configure({
         Auth: {
-          identityPoolId,
-          region,
+          identityPoolId: "us-east-1:3f29de31-1934-4cb2-8b84-6b70b2c7b3b8",
+          region: "us-east-1",
         },
         geo: {
           AmazonLocationService: {
             maps: {
               items: {
-                "explore.map": {
+                "testmap": {
                   style: "Default style"
                 },
               },
-              default: "explore.map",
+              default: "testmap",
             },
-            region,
+            region: "us-east-1",
           },
         }
       });
@@ -65,3 +55,4 @@
     </script>
   </body>
 </html>
+
