@@ -1,6 +1,7 @@
 import json
 import boto3
 import uuid
+from datetime import datetime
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
@@ -51,59 +52,6 @@ def point_inside_polygon(x, y, poly, include_edges=True):
     return inside
 
 
-def get_update_params(body):
-    update_expression = ["set "]
-    update_values = dict()
-
-    for key, val in body.items():
-        update_expression.append(f" {key} = :{key},")
-        update_values[f":{key}"] = val
-
-    return "".join(update_expression)[:-1], update_values
-
-
-def update_data(data, payload):
-    new_coords = []
-    boundary_name = payload['boundary_id']
-    try:
-        x = table.query(
-            IndexName='boundary-name-index',
-            KeyConditionExpression=Key('name').eq(boundary_name)
-        )
-
-        if x['Items']:
-            boundary_data = x['Items'][0]
-            boundary_polygon = json.loads(boundary_data.get('polygon'))
-
-            for coord in boundary_polygon:
-                new_coords.append(tuple(coord))
-
-            for point in payload['polygon']:
-                x, y = float(point[0]), float(point[1])
-                if not point_inside_polygon(x, y, new_coords):
-                    return (400, 'Zone coordinates not within Boundary')
-
-            d = {
-                'description': payload.get('description', ''),
-                'polygon': str(payload['polygon']),
-            }
-            a, v = get_update_params(d)
-
-            zone_table.update_item(
-                Key={
-                    'id': data['id']
-                },
-                UpdateExpression=a,
-                ExpressionAttributeValues=dict(v)
-            )
-            return (200, "OK")
-        else:
-            return (400, 'Boundary does not exist.')
-
-    except Exception as e:
-        raise Exception(e)
-
-
 def insert_data(payload):
     new_coords = []
     boundary_name = payload['boundary_id']
@@ -131,7 +79,9 @@ def insert_data(payload):
                     'zone_id': payload['zone_id'],
                     'description': payload.get('description', ''),
                     'polygon': str(payload['polygon']),
-                    'boundary_id': payload['boundary_id']
+                    'boundary_id': payload['boundary_id'],
+                    'time_created': str(datetime.now()),
+                    'last_modified': str(datetime.now())
                 }
             )
             return (200, "OK")
@@ -153,9 +103,9 @@ def lambda_handler(event, context):
             IndexName='boundary-zone-index',
             KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
         )
-
+        
         if data['Items']:
-            status_code, text = update_data(data=data['Items'][0], payload=payload)
+            status_code, text = 409, 'Zone already exist'
         else:
             status_code, text = insert_data(payload)
 
