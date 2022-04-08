@@ -1,6 +1,7 @@
 import json
 import boto3
 import uuid
+import urllib.parse
 from datetime import datetime
 from boto3.dynamodb.conditions import Key
 
@@ -144,14 +145,15 @@ def update_data(data, payload):
 def lambda_handler(event, context):
     body = event['body']
     payload = json.loads(body)
-    boundary_id = payload.get('boundary_id')
-    zone_id = payload.get('zone_id')
+    params = event['pathParameters']
+    boundary_id = urllib.parse.unquote_plus(params['boundary_id'])
+    zone_id = params['zone_id']
     message = ''
     text = ''
 
     new_polygon = payload.get('polygon', '')
     if new_polygon:
-        text += check_polygon(new_polygon, boundary_name=payload['boundary_id'])
+        text += check_polygon(new_polygon, boundary_name=boundary_id)
 
     new_zone_id = payload.get('new_zone_id', '')
     if new_zone_id:
@@ -171,7 +173,7 @@ def lambda_handler(event, context):
             IndexName='boundary-zone-index',
             KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
         )
-
+        
         if data['Items']:
             status_code, text = update_data(data=data['Items'][0], payload=payload)
 
