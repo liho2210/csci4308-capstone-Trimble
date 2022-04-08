@@ -39,26 +39,17 @@
       });
 
       async function initializeMap() {
-        await credentials.getPromise();
-        const map = new maplibregl.Map({
+        const map = await createMap(
+          {
             container: "map",
             center: [-123.1187, 49.2819],
             zoom: 10,
-            style: mapName;
-            transformRequest,
-        });
-        map.addControl(new maplibregl.NavigationControl(), "top-left");
-//         const map = await createMap(
-//           {
-//             container: "map",
-//             center: [-123.1187, 49.2819],
-//             zoom: 10,
-//             hash: true,
-//           }
-//         );
+            hash: true,
+          }
+        );
         
-//         map.addControl(new maplibregl.NavigationControl(), "top-left");
-//         return map;
+        map.addControl(new maplibregl.NavigationControl(), "top-left");
+        return map;
       }
 
       initializeMap();
