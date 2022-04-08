@@ -98,7 +98,7 @@ def check_zone(new_zone_id, boundary_name):
     )
 
     for zone in zone_data['Items']:
-        if new_zone_id == zone['zone_id']:
+        if str(new_zone_id) == zone['zone_id']:
             message = 'zone_id already exist'
             break
 
@@ -109,7 +109,7 @@ def check_boundary(new_boundary_name):
     message = ''
     boundary_data = table.query(
         IndexName='boundary-name-index',
-        KeyConditionExpression=Key('boundary_id').eq(new_boundary_name)
+        KeyConditionExpression=Key('name').eq(new_boundary_name)
     )
 
     if not boundary_data['Items']:
@@ -173,7 +173,7 @@ def lambda_handler(event, context):
             IndexName='boundary-zone-index',
             KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
         )
-        
+
         if data['Items']:
             status_code, text = update_data(data=data['Items'][0], payload=payload)
 
