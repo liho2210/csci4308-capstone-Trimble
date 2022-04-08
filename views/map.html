@@ -20,7 +20,7 @@
 
       Amplify.configure({
         Auth: {
-          identityPoolId: "4daa16c1-58e3-4f98-b36c-a3b71a1c24a2",
+          identityPoolId: "us-east-1:4daa16c1-58e3-4f98-b36c-a3b71a1c24a2",
           region: "us-east-1",
         },
         geo: {
@@ -47,7 +47,7 @@
             hash: true,
           }
         );
-
+        
         map.addControl(new maplibregl.NavigationControl(), "top-left");
 //         map.add
       }
