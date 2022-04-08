@@ -1,6 +1,7 @@
 import json
 import boto3
 import uuid
+import urllib.parse
 from datetime import datetime
 from boto3.dynamodb.conditions import Key
 
@@ -52,9 +53,8 @@ def point_inside_polygon(x, y, poly, include_edges=True):
     return inside
 
 
-def insert_data(payload):
+def insert_data(boundary_name, payload):
     new_coords = []
-    boundary_name = payload['boundary_id']
     try:
         x = table.query(
             IndexName='boundary-name-index',
@@ -79,7 +79,7 @@ def insert_data(payload):
                     'zone_id': payload['zone_id'],
                     'description': payload.get('description', ''),
                     'polygon': str(payload['polygon']),
-                    'boundary_id': payload['boundary_id'],
+                    'boundary_id': boundary_name,
                     'time_created': str(datetime.now()),
                     'last_modified': str(datetime.now())
                 }
@@ -95,7 +95,8 @@ def insert_data(payload):
 def lambda_handler(event, context):
     body = event['body']
     payload = json.loads(body)
-    boundary_id = payload.get('boundary_id')
+    params = event['pathParameters']
+    boundary_id = urllib.parse.unquote_plus(params['boundary_id'])
     zone_id = payload.get('zone_id')
 
     try:
@@ -103,11 +104,11 @@ def lambda_handler(event, context):
             IndexName='boundary-zone-index',
             KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
         )
-        
+
         if data['Items']:
             status_code, text = 409, 'Zone already exist'
         else:
-            status_code, text = insert_data(payload)
+            status_code, text = insert_data(boundary_id, payload)
 
     except Exception as e:
         raise Exception(e)
