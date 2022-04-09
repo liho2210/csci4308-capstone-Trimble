@@ -1,5 +1,6 @@
 import json
 import boto3
+import urllib.parse
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
@@ -14,29 +15,34 @@ def render(status_code, text=None, content=None):
             "content-type": "application/json",
             "access-control-allow-origin": "*"
         },
-        "body": json.dumps(content) if status_code == 200 else json.dumps({"message": text}) 
+        "body": json.dumps(content) if status_code == 200 else json.dumps({"message": text})
     }
-    
-    
+
+
 def lambda_handler(event, context):
     params = event['pathParameters']
+    boundary_id = urllib.parse.unquote_plus(params['boundary_id'])
     resource_name = params['resource_name']
-    
+    zone_id = params.get('zone_id')
+
     response = []
-    
+
     try:
-        data = resource_table.query (
-            IndexName='resource-index',
-            KeyConditionExpression=Key('resource').eq(resource_name)
+        data = resource_table.query(
+            IndexName='resource_name-zone_id-index',
+            KeyConditionExpression=Key('resource_name').eq(resource_name) & Key('zone_id').eq(zone_id)
         )
-        
-        response = data['Items']
+
+        for resource in data['Items']:
+            if resource['boundary_id'] == str(boundary_id):
+                response = resource
+                break
 
         if not response:
-            return render(500, text='Resouce not found')
-        
+            return render(500, text='Resource not found')
+
     except Exception as e:
         raise Exception(e)
-        
+
     return render(200, content=response)
 
