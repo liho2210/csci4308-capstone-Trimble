@@ -2,7 +2,7 @@ $(function() {
     var $zones = $('#zones');
     $.ajax({
             type: "GET",
-            url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary',
+            url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/54f6d866-5fec-4180-8ba8-853818d53a6a/zones',
             data: {},
             success: function(zones) {
               $.each(zones, function(i, zone){
