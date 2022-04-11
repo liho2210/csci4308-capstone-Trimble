@@ -6,7 +6,7 @@ $(function() {
             data: {},
             success: function(resources) {
               $.each(resources, function(i, resource){
-                $resources.append('<li>'+resource.description+'</li>');
+                $resources.append('<li>'+resource.resource_name+'</li>');
               });
             },
 

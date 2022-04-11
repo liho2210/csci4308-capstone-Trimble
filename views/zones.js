@@ -6,7 +6,7 @@ $(function() {
             data: {},
             success: function(zones) {
               $.each(zones, function(i, zone){
-                $zones.append('<li>'+zone.name+'</li>');
+                $zones.append('<li>'+zone.zone_id+'</li>');
               });
             },
 
