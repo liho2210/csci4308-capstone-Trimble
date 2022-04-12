@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Boundaries</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
@@ -79,17 +74,110 @@
   <body>
     <div id="map"></div>
     <div id="mySidenav" class="sidenav">
-      <a style="display: inline">Boundaries</a>
-      <div class="add_button">
-        <!-- <img src="img/icons8-plus-96.png" width="48" height="48" /> -->
-        <button onclick="create_boundary()">create</button>
+      <div>
+        <a style="display: inline">Boundaries</a>
+        <div class="add_button">
+          <!-- <a href="" style="display: inline;">+</a> -->
+          <!-- <img src="img/icons8-plus-96.png" width="48" height="48" /> -->
+          <button onclick="create_boundary()">+</button>
+        </div>
       </div>
-      <ul id="boundaries"></ul>
-      <a href="zones.html"> zones </a>
-      <br />
-      <a href="index.html">logout</a>
-    </div>
+      <hr />
 
+      <div class="container_button">
+        <div class="list">
+          <ul id="boundaries"></ul>
+        </div>
+
+        <!-- <a href="zones.html" style="display: inline">Boundary 001</a>
+      <div
+        class="edit"
+        data-toggle="modal"
+        style="display: inline"
+        data-target="#myModal"
+      >
+        edit
+      </div>
+    </div>
+    <div class="container_button">
+      <a href="zones.html" style="display: inline">Boundary 002</a>
+      <div
+        class="edit"
+        data-toggle="modal"
+        style="display: inline"
+        data-target="#myModal"
+      >
+        edit
+      </div>
+    </div>
+    <div class="container_button">
+      <a href="zones.html" style="display: inline">Boundary 003</a>
+      <div
+        class="edit"
+        data-toggle="modal"
+        style="display: inline"
+        data-target="#myModal"
+      >
+        edit
+      </div> -->
+      </div>
+
+      <div class="nav_footer">
+        <div class="footer_bar">
+          <hr />
+        </div>
+        <div class="logout">
+          <a href="zones.html">Zones</a>
+        </div>
+
+        <div class="back">
+          <a href="index.html">Back</a>
+        </div>
+      </div>
+
+      <div class="modal" id="myModal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+              <h4 class="modal-title">Coordinates</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Latitude:</label>
+              <select name="project" id="project"></select>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Longitude:</label>
+              <select name="project" id="project"></select>
+            </div>
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="boundaries.js"></script>
     <script>
       // initialize the map

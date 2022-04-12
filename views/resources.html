@@ -1,17 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"
+    />
+    <script src="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
+  <style>
+    .logout {
+      position: relative;
+      bottom: 0;
+      right: 30px;
+      float: right;
+    }
+
+    .back {
+      position: relative;
+      bottom: 0;
+      /* left: 0; */
+      float: left;
+    }
+
+    .nav_footer {
+      height: 130px;
+      width: 380px;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .footer_bar {
+      position: relative;
+      top: 1px;
+    }
+
+    .edit {
+      position: relative;
+      float: right;
+    }
+
+    .container_button {
+      height: 50px;
+      width: 350px;
+      position: relative;
+    }
+
+    .add_button {
+      position: relative;
+      float: right;
+      right: 20px;
+      /* font-size: 70px; */
+      -ms-transform: translateY(-6px);
+      /* -ms-transform: translateX(100%); */
+      transform: translateY(-6px);
+    }
+
+    #map {
+      /* width: 900px;
+        height: 500px; */
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
   <body>
-    <h1>Resources</h1>
-    <ul id="resources"></ul>
-    <a href="zones.html">back</a>
-    <button onclick="create_resource()">create</button>
+    <div id="map"></div>
+    <div id="mySidenav" class="sidenav">
+      <div>
+        <a style="display: inline">Resources</a>
+        <div class="add_button">
+          <!-- <a href="" style="display: inline;">+</a> -->
+          <!-- <img src="img/icons8-plus-96.png" width="48" height="48" /> -->
+          <button onclick="create_resource()">+</button>
+        </div>
+      </div>
+      <hr />
+
+      <div class="container_button">
+        <div class="list">
+          <ul id="resources"></ul>
+        </div>
+
+        <!-- <a href="zones.html" style="display: inline">Boundary 001</a>
+      <div
+        class="edit"
+        data-toggle="modal"
+        style="display: inline"
+        data-target="#myModal"
+      >
+        edit
+      </div>
+    </div>
+    <div class="container_button">
+      <a href="zones.html" style="display: inline">Boundary 002</a>
+      <div
+        class="edit"
+        data-toggle="modal"
+        style="display: inline"
+        data-target="#myModal"
+      >
+        edit
+      </div>
+    </div>
+    <div class="container_button">
+      <a href="zones.html" style="display: inline">Boundary 003</a>
+      <div
+        class="edit"
+        data-toggle="modal"
+        style="display: inline"
+        data-target="#myModal"
+      >
+        edit
+      </div> -->
+      </div>
+
+      <div class="nav_footer">
+        <div class="footer_bar">
+          <hr />
+        </div>
+        <div class="logout">
+          <a href="resources.html">Resources</a>
+        </div>
+
+        <div class="back">
+          <a href="zones.html">Back</a>
+        </div>
+      </div>
+
+      <div class="modal" id="myModal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+              <h4 class="modal-title">Coordinates</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Latitude:</label>
+              <select name="project" id="project"></select>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Longitude:</label>
+              <select name="project" id="project"></select>
+            </div>
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="resources.js"></script>
+    <script>
+      // initialize the map
+      var map = L.map("map", { zoomControl: false }).setView(
+        [40.015, -105.2705],
+        13
+      );
+
+      // load a tile layer
+      L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
+        attribution:
+          'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
+        maxZoom: 17,
+        minZoom: 9,
+      }).addTo(map);
+    </script>
   </body>
 </html>
