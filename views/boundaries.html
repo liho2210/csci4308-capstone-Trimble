@@ -4,10 +4,24 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Boundaries</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"
+    />
+    <script src="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
   <body>
+    <div id="map"></div>
     <h1>Boundaries</h1>
     <ul id="boundaries"></ul>
     <a href="zones.html"> zones </a>
@@ -15,5 +29,21 @@
     <a href="index.html">logout</a>
     <button onclick="create_boundary()">create</button>
     <script src="boundaries.js"></script>
+    <script>
+      // initialize the map
+      var map = L.map("map", { zoomControl: false }).setView(
+        [40.015, -105.2705],
+        13
+      );
+
+      // load a tile layer
+      L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
+        attribution:
+          'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
+        maxZoom: 17,
+        minZoom: 9,
+      }).addTo(map);
+    </script>
   </body>
 </html>
