@@ -346,6 +346,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
+    get:
+      tags:
+        - resource
+      summary: Get all Resource
+      description: Retrieve all resource under boundary and zone
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
     options:
       parameters:
       - name: boundary_id
