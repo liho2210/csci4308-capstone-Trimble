@@ -2,7 +2,7 @@ $(function() {
     var $zones = $('#zones');
     $.ajax({
             type: "GET",
-            url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/229408da-73f3-403d-a5fb-f90314e9f182/zones',
+            url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/Middle+CU+Project/zones',
             data: {},
             success: function(zones) {
               $.each(zones, function(i, zone){
@@ -20,7 +20,7 @@ $(function() {
 function create_zone(){
   $.ajax({
     type: "POST",
-    url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/229408da-73f3-403d-a5fb-f90314e9f182/zones",
+    url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/Middle+CU+Project/zones",
     data: `{
       "zone_id": "2",
       "polygon": [
