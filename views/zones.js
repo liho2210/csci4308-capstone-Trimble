@@ -22,7 +22,7 @@ function create_zone(){
     type: "POST",
     url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/Middle+CU+Project/zones",
     data: `{
-      "zone_id": "2",
+      "zone_id": "5",
       "polygon": [
         [
           -105.268,
