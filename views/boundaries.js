@@ -6,7 +6,9 @@ $(function() {
             data: {},
             success: function(boundaries) {
               $.each(boundaries, function(i, boundary){
-                $boundaries.append('<li>'+boundary.name+'</li>');
+                // $boundaries.append('<li>'+boundary.id+'</li>');
+                $boundaries.append('<a href="https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary/"onclick="location.href=this.href+boundary.id;return false;">'+boundary.name+'</a>');
+                // $boundaries.append('<a href="index.html">'+boundary.name+'</a>');
               });
             },
 

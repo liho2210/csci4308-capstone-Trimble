@@ -6,7 +6,9 @@ $(function() {
             data: {},
             success: function(zones) {
               $.each(zones, function(i, zone){
-                $zones.append('<li>'+zone.zone_id+'</li>');
+                // $zones.append('<li>'+zone.zone_id+'</li>');
+                $zones.append('<a href="resources.html">'+zone.zone_id+'</a>');
+
               });
             },
 
