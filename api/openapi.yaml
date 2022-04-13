@@ -102,6 +102,29 @@ paths:
           description: All resources pointing to this boundary must be updated or deleted.
         404:
           description: Not Found
+  /boundary/{boundary_id}/events:
+    get:
+      tags:
+      - event
+      summary: Get events by boundary
+      description: Returns all event pertaining to a specific boundary
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        404:
+          description: Not Found
 
   /boundaries:
     options:
@@ -609,7 +632,29 @@ components:
           format: date-time
           readOnly: true
           example: "2022-03-31 17:11:55.597337"
-
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
+        boundary_id:
+          type: string
+          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
+        zone_id:
+          type: string
+          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
+        resource_id:
+          type: string
+          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
+        message:
+          type: string
+          example: "Bricks amount changed from 500 to 50"
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
     ZonePatch:
       type: object
       properties:
