@@ -126,50 +126,7 @@ paths:
         404:
           description: Not Found
 
-  /boundaries:
-    options:
-      responses:
-        200:
-          description: 200 response
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Empty'
-  /boundaries/{boundary_id}:
-    options:
-      parameters:
-      - name: boundary_id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: 200 response
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Empty'
+
   /boundaries/{boundary_id}/zones:
     post:
       tags:
@@ -214,30 +171,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Zone'
 
-    options:
-      parameters:
-      - name: boundary_id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: 200 response
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Empty'
 
   /boundaries/{boundary_id}/zones/{zone_id}:
     get:
@@ -285,35 +218,7 @@ paths:
         400:
           description: Zone not found
 
-    options:
-      parameters:
-      - name: boundary_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: zone_id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: 200 response
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Empty'
+
     patch:
       tags:
         - zones
@@ -392,35 +297,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Resource'
-    options:
-      parameters:
-      - name: boundary_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: zone_id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: 200 response
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Empty'
+
   /boundaries/{boundary_id}/zones/{zone_id}/resources/{resource_name}:
     get:
       tags:
@@ -475,40 +352,7 @@ paths:
         200:
           description: OK
 
-    options:
-      parameters:
-      - name: boundary_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: zone_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: resource_name
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: 200 response
-          headers:
-            Access-Control-Allow-Origin:
-              schema:
-                type: string
-            Access-Control-Allow-Methods:
-              schema:
-                type: string
-            Access-Control-Allow-Headers:
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Empty'
+
     patch:
       tags:
         - resource
@@ -632,6 +476,12 @@ components:
           format: date-time
           readOnly: true
           example: "2022-03-31 17:11:55.597337"
+        metadata:
+          type: object
+          description: Captures any additional necessary information about a zone
+          example: {Manager: Henry}
+          maxItems: 10
+
     Event:
       type: object
       properties:
