@@ -6,7 +6,7 @@ from datetime import datetime
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('boundary')
+boundary_table = dynamodb.Table('boundary')
 zone_table = dynamodb.Table('zone')
 
 
@@ -67,7 +67,7 @@ def get_update_params(body):
 def check_polygon(polygon, boundary_name):
     message = ''
     new_coords = []
-    x = table.query(
+    x = boundary_table.query(
         IndexName='boundary-name-index',
         KeyConditionExpression=Key('name').eq(boundary_name)
     )
@@ -93,8 +93,8 @@ def check_polygon(polygon, boundary_name):
 def check_zone(new_zone_id, boundary_name):
     message = ''
     zone_data = zone_table.query(
-        IndexName='boundary-zone-index',
-        KeyConditionExpression=Key('boundary_id').eq(boundary_name)
+        IndexName='boundary_name-zone_id-index',
+        KeyConditionExpression=Key('boundary_name').eq(boundary_name)
     )
 
     for zone in zone_data['Items']:
@@ -105,27 +105,29 @@ def check_zone(new_zone_id, boundary_name):
     return message
 
 
-def check_boundary(new_boundary_name):
+def check_boundary(new_boundary_id):
     message = ''
-    boundary_data = table.query(
-        IndexName='boundary-name-index',
-        KeyConditionExpression=Key('name').eq(new_boundary_name)
-    )
+    new_boundary_name = ''
 
-    if not boundary_data['Items']:
+    boundary_data = boundary_table.get_item(Key={'id': new_boundary_id})
+
+    if 'Item' not in boundary_data:
         message = 'New Boundary Name does not exist'
+    else:
+        new_boundary_name = boundary_data['Item']['name']
 
-    return message
+    return message, new_boundary_name
 
 
-def update_data(data, payload):
+def update_data(data, payload, new_boundary_name=None):
     try:
         d = {
-            'boundary_id': str(payload.get('new_boundary_id', data['boundary_id'])),
+            'boundary_name': new_boundary_name if new_boundary_name else data['boundary_name'],
             'zone_id': str(payload.get('new_zone_id', data['zone_id'])),
             'description': payload.get('description', data['description']),
             'polygon': str(payload.get('polygon', data['polygon'])),
-            'last_modified': str(datetime.now())
+            'last_modified': str(datetime.now()),
+            'metadata': payload.get('metadata', data['metadata'])
         }
         a, v = get_update_params(d)
 
@@ -150,19 +152,29 @@ def lambda_handler(event, context):
     zone_id = params['zone_id']
     message = ''
     text = ''
+    boundary_name = ''
+    new_boundary_name = ''
+
+    boundary_data = boundary_table.get_item(Key={'id': boundary_id})
+
+    if 'Item' in boundary_data:
+        boundary_data = boundary_data['Item']
+        boundary_name = boundary_data.get('name', '')
+    else:
+        return render(400, 'Boundary not found')
 
     new_polygon = payload.get('polygon', '')
     if new_polygon:
-        text += check_polygon(new_polygon, boundary_name=boundary_id)
-
-    new_zone_id = payload.get('new_zone_id', '')
-    if new_zone_id:
-        message = check_zone(new_zone_id, boundary_id)
-        text += ', ' + message if text else message
+        text += check_polygon(new_polygon, boundary_name)
 
     new_boundary_id = payload.get('new_boundary_id', '')
     if new_boundary_id:
-        message = check_boundary(new_boundary_id)
+        message, new_boundary_name = check_boundary(new_boundary_id)
+        text += ', ' + message if text else message
+
+    new_zone_id = payload.get('new_zone_id', '')
+    if new_zone_id:
+        message = check_zone(new_zone_id, boundary_name if not new_boundary_name else new_boundary_name)
         text += ', ' + message if text else message
 
     if text:
@@ -170,13 +182,12 @@ def lambda_handler(event, context):
 
     try:
         data = zone_table.query(
-            IndexName='boundary-zone-index',
-            KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
+            IndexName='boundary_name-zone_id-index',
+            KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
         )
 
         if data['Items']:
-            status_code, text = update_data(data=data['Items'][0], payload=payload)
-
+            status_code, text = update_data(data=data['Items'][0], payload=payload, new_boundary_name=new_boundary_name)
         else:
             status_code, text = 400, 'Zone does not exist'
 
