@@ -137,6 +137,14 @@
         13
       );
 
+      var latlngs = [
+        [40.0103, -105.2715],
+        [40.0067, -105.2715],
+        // [40.009, -105.2697],
+        [40.0072, -105.2628],
+      ];
+
+      var polygon = L.polygon(latlngs, { color: "red" });
       // load a tile layer
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
@@ -145,6 +153,9 @@
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
+
+      polygon.addTo(map);
+      // L.addLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",).addTo(map)
     </script>
   </body>
 </html>
