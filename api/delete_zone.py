@@ -5,6 +5,7 @@ from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
 zone_table = dynamodb.Table('zone')
+boundary_table = dynamodb.Table('boundary')
 
 
 def render(status_code, text=None, content=None):
@@ -25,21 +26,30 @@ def lambda_handler(event, context):
     zone_id = params.get('zone_id')
 
     try:
-        # query through database with a GSI
-        data = zone_table.query(
-            IndexName='boundary-zone-index',
-            KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
-        )
+        boundary_data = boundary_table.get_item(Key={'id': boundary_id})
 
-        if not data['Items']:
-            return render(404, 'Zone not found')
+        if 'Item' in boundary_data:
+            boundary_data = boundary_data['Item']
+            boundary_name = boundary_data.get('name', '')
 
-        for zone in data['Items']:
-            zone_table.delete_item(
-                Key={
-                    'id': zone['id']
-                }
+            # query through database with a GSI
+            data = zone_table.query(
+                IndexName='boundary_name-zone_id-index',
+                KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
             )
+
+            if not data['Items']:
+                return render(404, 'Zone not found')
+
+            for zone in data['Items']:
+                zone_table.delete_item(
+                    Key={
+                        'id': zone['id']
+                    }
+                )
+
+        else:
+            return render(400, 'Boundary not found')
 
     except Exception as e:
         raise Exception(e)
