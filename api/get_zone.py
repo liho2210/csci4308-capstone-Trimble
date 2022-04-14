@@ -5,6 +5,7 @@ from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('zone')
+boundary_table = dynamodb.Table('boundary')
 
 
 def render(status_code, text=None, content=None):
@@ -26,26 +27,35 @@ def lambda_handler(event, context):
     response = []
 
     try:
-        # query through database with a GSI
-        if zone_id:
-            k = Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
+        boundary_data = boundary_table.get_item(Key={'id': boundary_id})
+
+        if 'Item' in boundary_data:
+            boundary_data = boundary_data['Item']
+            boundary_name = boundary_data.get('name', '')
+
+            # query through database with a GSI
+            if zone_id:
+                k = Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
+            else:
+                k = Key('boundary_name').eq(boundary_name)
+            data = table.query(
+                IndexName='boundary_name-zone_id-index',
+                KeyConditionExpression=k
+            )
+
+            for zone in data['Items']:
+                d = {
+                    'zone_id': zone['zone_id'],
+                    'polygon': json.loads(zone['polygon']),  # convert string list to list
+                    'description': zone['description'],
+                    'metadata': zone.get('metadata', {})
+                }
+                response.append(d)
+
+            if not response:
+                return render(500, text='Get zones from boundary Failed.')
         else:
-            k = Key('boundary_id').eq(boundary_id)
-        data = table.query(
-            IndexName='boundary-zone-index',
-            KeyConditionExpression=k
-        )
-
-        for zone in data['Items']:
-            d = {
-                'zone_id': zone['zone_id'],
-                'polygon': json.loads(zone['polygon']),  # convert string list to list
-                'description': zone['description'],
-            }
-            response.append(d)
-
-        if not response:
-            return render(500, text='Get zones from boundary Failed.')
+            return render(400, 'Boundary does not exist')
 
     except Exception as e:
         raise Exception(e)
