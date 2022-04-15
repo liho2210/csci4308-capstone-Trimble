@@ -5,6 +5,7 @@ from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
 resource_table = dynamodb.Table('resource')
+boundary_table = dynamodb.Table('boundary')
 
 
 def render(status_code, text=None, content=None):
@@ -28,6 +29,14 @@ def lambda_handler(event, context):
     response = []
 
     try:
+        boundary_data = boundary_table.get_item(Key={'id': boundary_id})
+
+        if 'Item' in boundary_data:
+            boundary_data = boundary_data['Item']
+            boundary_name = boundary_data.get('name', '')
+        else:
+            return render(400, 'Boundary does not exist')
+
         if resource_name:
             data = resource_table.query(
                 IndexName='resource_name-zone_id-index',
@@ -35,25 +44,17 @@ def lambda_handler(event, context):
             )
 
             for resource in data['Items']:
-                if resource['boundary_id'] == str(boundary_id):
+                if resource['boundary_name'] == str(boundary_name):
                     response = resource
                     break
 
         else:
             data = resource_table.query(
-                IndexName='boundary_id-zone_id-index',
-                KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
+                IndexName='boundary_name-zone_id-index',
+                KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
             )
             for r in data['Items']:
-                d = {
-                    'resource_name': r['resource_name'],
-                    'resource_type': r['resource_type'],
-                    'resource_status': r['resource_status'],
-                    'amount': r['amount'],
-                    'coordinates': json.loads(r['coordinates']),  # convert string list to list
-                    'description': r['description'],
-                }
-                response.append(d)
+                response.append(r)
 
         if not response:
             return render(500, text='No resource found')
