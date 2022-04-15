@@ -17,20 +17,17 @@ $(function() {
   });
 })
 
-function create_resource(){
+function create_resource(name, type, status, amount, description, coordinates){
 $.ajax({
   type: "POST",
   url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/Middle+CU+Project/zones/2/resources",
   data: `{
-    "resource_name": "Brick",
-    "resource_type": "Material",
-    "resource_status": "Arrived",
-    "amount": "50",
-    "description": "Used for building walls",
-    "coordinates": [
-      -105.267,
-      40.006
-    ]
+    "resource_name": "${name}",
+    "resource_type": "${type}",
+    "resource_status": "${status}",
+    "amount": "${amount}",
+    "description": "${description}",
+    "coordinates": "${coordinates}"
   }`,
   success: function(resources) {
     console.log('success')

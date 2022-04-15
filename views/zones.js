@@ -18,35 +18,14 @@ $(function() {
   console.log(localStorage.getItem("boundary"));
 })
 
-function create_zone(){
+function create_zone(zone_id, polygon, description){
 $.ajax({
   type: "POST",
-  url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/Middle+CU+Project/zones",
+  url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/"+localStorage.getItem("boundary")+"/zones",
   data: `{
-    "zone_id": "5",
-    "polygon": [
-      [
-        -105.268,
-        40.006
-      ],
-      [
-        -105.268,
-        40.005
-      ],
-      [
-        -105.266,
-        40.005
-      ],
-      [
-        -105.266,
-        40.006
-      ],
-      [
-        -105.268,
-        40.006
-      ]
-    ],
-    "description": "These coordinates roughly outline Farrand Field"
+    "zone_id": "${zone_id}",
+    "polygon": "${polygon}",
+    "description": "${description}"
   }`,
   success: function(zones) {
     console.log('success')

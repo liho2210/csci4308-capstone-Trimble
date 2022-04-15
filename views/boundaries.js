@@ -17,14 +17,14 @@ $(function() {
     
 })
 
-function create_boundary(){
+function create_boundary(name, description, polygon){
 $.ajax({
   type: "POST",
   url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary",
   data: `{
-    "name": "Folsom Field Project",
-    "description": "This polygon roughly encapsulates folsom field",
-    "polygon": "[[-105.268026, 40.008357], [-105.267992, 40.010473], [-105.265692, 40.010451], [-105.265626, 40.008405]]",
+    "name": "${name}",
+    "description": "${description}",
+    "polygon": "${polygon}",
     "metadata": {
       "status": "in progress"
     }
