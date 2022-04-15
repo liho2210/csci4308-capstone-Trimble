@@ -104,15 +104,12 @@ def check_zone(new_zone_id, boundary_name):
     return message
 
 
-def check_boundary(new_boundary_name):
+def check_boundary(new_boundary_id):
     message = ''
-    boundary_data = boundary_table.query(
-        IndexName='boundary-name-index',
-        KeyConditionExpression=Key('name').eq(new_boundary_name)
-    )
+    boundary_data = boundary_table.get_item(Key={'id': new_boundary_id})
 
-    if not boundary_data['Items']:
-        message = 'New Boundary does not exist'
+    if 'Item' not in boundary_data:
+        message = 'Boundary does not exist'
 
     return message
 
