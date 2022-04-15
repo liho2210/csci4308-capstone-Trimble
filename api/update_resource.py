@@ -107,11 +107,13 @@ def check_zone(new_zone_id, boundary_name):
 def check_boundary(new_boundary_id):
     message = ''
     boundary_data = boundary_table.get_item(Key={'id': new_boundary_id})
+    boundary_name = ''
 
     if 'Item' not in boundary_data:
         message = 'Boundary does not exist'
-
-    return message
+    else:
+        new_boundary_name = boundary_data['Item'].get('name', '')
+    return message, new_boundary_name
 
 
 def check_resource(new_resource_name, boundary_name, zone_id):
@@ -128,10 +130,10 @@ def check_resource(new_resource_name, boundary_name, zone_id):
     return message
 
 
-def update_data(data, payload):
+def update_data(data, payload, new_boundary_name=None):
     try:
         d = {
-            'boundary_name': str(payload.get('new_boundary_id', data['boundary_name'])),
+            'boundary_name': new_boundary_name if new_boundary_name else data['boundary_name'],
             'zone_id': str(payload.get('new_zone_id', data['zone_id'])),
             'resource_name': str(payload.get('new_resource_name', data['resource_name'])),
             'resource_type': str(payload.get('resource_type', data['resource_type'])),
@@ -166,6 +168,7 @@ def lambda_handler(event, context):
     resource = params['resource_name']
     message = ''
     text = ''
+    new_boundary_name = ''
     zone_data = []
 
     boundary_data = boundary_table.get_item(Key={'id': boundary_id})
@@ -187,7 +190,7 @@ def lambda_handler(event, context):
 
     new_boundary_id = payload.get('new_boundary_id', '')
     if new_boundary_id:
-        message = check_boundary(new_boundary_id)
+        message, new_boundary_name = check_boundary(new_boundary_id)
         text += ', ' + message if text else message
 
     new_resource_name = payload.get('new_resource_name', '')
@@ -210,7 +213,7 @@ def lambda_handler(event, context):
                 break
 
         if zone_data:
-            update_data(zone_data, payload)
+            update_data(zone_data, payload, new_boundary_name)
             return render(200, 'OK')
         else:
             return render(409, text='Resource does not exist')
