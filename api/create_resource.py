@@ -6,7 +6,7 @@ from datetime import datetime
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('boundary')
+boundary_table = dynamodb.Table('boundary')
 resource_table = dynamodb.Table('resource')
 zone_table = dynamodb.Table('zone')
 
@@ -58,8 +58,8 @@ def insert_data(boundary_name, zone_id, payload):
     zone_coords = []
     try:
         x = zone_table.query(
-            IndexName='boundary-zone-index',
-            KeyConditionExpression=Key('boundary_id').eq(boundary_name) & Key('zone_id').eq(zone_id)
+            IndexName='boundary_name-zone_id-index',
+            KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
         )
         if x['Items']:
             zone_data = x['Items'][0]
@@ -68,30 +68,34 @@ def insert_data(boundary_name, zone_id, payload):
             for coord in zone_polygon:
                 zone_coords.append(tuple(coord))
 
-            x, y = float(payload['coordinates'][0]), float(payload['coordinates'][1])
-            if not point_inside_polygon(x, y, zone_coords):
-                return (400, 'Location of resource is not within boundary and zone')
+            for point in payload['coordinates']:
+                x, y = float(point[0]), float(point[1])
+                if not point_inside_polygon(x, y, zone_coords):
+                    return (400, 'Location of resource is not within boundary and zone')
 
             resource_table.put_item(
                 Item={
                     'id': str(uuid.uuid4()),
                     'zone_id': zone_id,
-                    'boundary_id': boundary_name,
+                    'boundary_name': boundary_name,
                     'coordinates': str(payload['coordinates']),
-                    'resource_name': payload['resource_name'],
-                    'resource_type': payload['resource_type'],
-                    'resource_status': payload['resource_status'],
-                    'amount': payload['amount'],
+                    'resource_name': payload.get('resource_name', ''),
+                    'resource_type': payload.get('resource_type', ''),
+                    'resource_status': payload.get('resource_status', ''),
+                    'amount': payload.get('amount', ''),
                     'description': payload.get('description', ''),
                     'time_created': str(datetime.now()),
-                    'last_modified': str(datetime.now())
+                    'last_modified': str(datetime.now()),
+                    'metadata': payload.get('metadata', {})
                 }
             )
         else:
-            (400, 'Zone or Boundary does not exist.')
+            return (400, 'Zone or Boundary does not exist.')
 
     except Exception as e:
         raise Exception(e)
+
+    return (200, 'OK')
 
 
 def lambda_handler(event, context):
@@ -102,26 +106,33 @@ def lambda_handler(event, context):
     payload = json.loads(body)
     resource = payload.get('resource_name')
     text = ''
-    zone_data = []
+    resource_data = []
 
     try:
+        boundary_data = boundary_table.get_item(Key={'id': boundary_id})
+
+        if 'Item' in boundary_data:
+            boundary_data = boundary_data['Item']
+            boundary_name = boundary_data.get('name', '')
+        else:
+            return render(400, 'Boundary does not exist')
+
         data = resource_table.query(
-            IndexName='resource_name-zone_id-index',
-            KeyConditionExpression=Key('resource_name').eq(resource) & Key('zone_id').eq(zone_id)
+            IndexName='boundary_name-zone_id-index',
+            KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
         )
 
-        for zones in data['Items']:
-            if zones['boundary_id'] == str(boundary_id):
-                zone_data = zones
+        for r in data['Items']:
+            if r['resource_name'] == str(resource):
+                resource_data = r
                 break
 
-        if zone_data:
+        if resource_data:
             return render(409, text='Resource is already created under zone_id and boundary_id')
         else:
-            insert_data(boundary_id, zone_id, payload)
-            return render(200, text='OK')
+            status_code, message = insert_data(boundary_name, zone_id, payload)
 
     except Exception as e:
         raise Exception(e)
 
-    return render(status_code, text=text)
+    return render(status_code, message)
