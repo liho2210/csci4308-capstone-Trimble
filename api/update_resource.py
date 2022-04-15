@@ -6,7 +6,7 @@ from datetime import datetime
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('boundary')
+boundary_table = dynamodb.Table('boundary')
 zone_table = dynamodb.Table('zone')
 resource_table = dynamodb.Table('resource')
 
@@ -65,12 +65,12 @@ def get_update_params(body):
     return "".join(update_expression)[:-1], update_values
 
 
-def check_coords(coordinates, boundary_id, zone_id):
+def check_coords(payload, boundary_name, zone_id):
     message = ''
     new_coords = []
     x = zone_table.query(
-        IndexName='boundary-zone-index',
-        KeyConditionExpression=Key('boundary_id').eq(boundary_id) & Key('zone_id').eq(zone_id)
+        IndexName='boundary_name-zone_id-index',
+        KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
     )
 
     if x['Items']:
@@ -80,9 +80,10 @@ def check_coords(coordinates, boundary_id, zone_id):
         for coord in zone_polygon:
             new_coords.append(tuple(coord))
 
-        x, y = float(coordinates[0]), float(coordinates[1])
-        if not point_inside_polygon(x, y, new_coords):
-            message = 'resource coordinates not within zone'
+        for point in payload['coordinates']:
+            x, y = float(point[0]), float(point[1])
+            if not point_inside_polygon(x, y, new_coords):
+                message = 'resource coordinates not within zone'
 
     else:
         message = 'Zone or boundary does not exist'
@@ -93,8 +94,8 @@ def check_coords(coordinates, boundary_id, zone_id):
 def check_zone(new_zone_id, boundary_name):
     message = ''
     zone_data = zone_table.query(
-        IndexName='boundary-zone-index',
-        KeyConditionExpression=Key('boundary_id').eq(boundary_name) & Key('zone_id').eq(new_zone_id)
+        IndexName='boundary_name-zone_id-index',
+        KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(new_zone_id)
     )
 
     if not zone_data['Items']:
@@ -105,26 +106,27 @@ def check_zone(new_zone_id, boundary_name):
 
 def check_boundary(new_boundary_name):
     message = ''
-    boundary_data = table.query(
+    boundary_data = boundary_table.query(
         IndexName='boundary-name-index',
         KeyConditionExpression=Key('name').eq(new_boundary_name)
     )
 
     if not boundary_data['Items']:
-        message = 'New Boundary Name does not exist'
+        message = 'New Boundary does not exist'
 
     return message
 
 
-def check_resource(new_resource_name, zone_id):
+def check_resource(new_resource_name, boundary_name, zone_id):
     message = ''
     data = resource_table.query(
-        IndexName='resource_name-zone_id-index',
-        KeyConditionExpression=Key('resource_name').eq(new_resource_name) & Key('zone_id').eq(zone_id)
+        IndexName='boundary_name-zone_id-index',
+        KeyConditionExpression=Key('boundary_name').eq(boundary_name) & Key('zone_id').eq(zone_id)
     )
 
-    if data['Items']:
-        message = 'new Resource name already exist'
+    for r in data['Items']:
+        if r['resource_name'] == new_resource_name:
+            message = 'New resource name already exist in this boundary'
 
     return message
 
@@ -132,7 +134,7 @@ def check_resource(new_resource_name, zone_id):
 def update_data(data, payload):
     try:
         d = {
-            'boundary_id': str(payload.get('new_boundary_id', data['boundary_id'])),
+            'boundary_name': str(payload.get('new_boundary_id', data['boundary_name'])),
             'zone_id': str(payload.get('new_zone_id', data['zone_id'])),
             'resource_name': str(payload.get('new_resource_name', data['resource_name'])),
             'resource_type': str(payload.get('resource_type', data['resource_type'])),
@@ -140,7 +142,8 @@ def update_data(data, payload):
             'description': payload.get('description', data['description']),
             'coordinates': str(payload.get('coordinates', data['coordinates'])),
             'amount': str(payload.get('amount', data['amount'])),
-            'last_modified': str(datetime.now())
+            'last_modified': str(datetime.now()),
+            'metadata': payload.get('metadata', {})
         }
         a, v = get_update_params(d)
 
@@ -168,13 +171,21 @@ def lambda_handler(event, context):
     text = ''
     zone_data = []
 
+    boundary_data = boundary_table.get_item(Key={'id': boundary_id})
+
+    if 'Item' in boundary_data:
+        boundary_data = boundary_data['Item']
+        boundary_name = boundary_data.get('name', '')
+    else:
+        return render(400, 'Boundary does not exist')
+
     new_coordinates = payload.get('coordinates', '')
     if new_coordinates:
-        text += check_coords(new_coordinates, boundary_id, zone_id)
+        text += check_coords(payload, boundary_name, zone_id)
 
     new_zone_id = payload.get('new_zone_id', '')
     if new_zone_id:
-        message = check_zone(new_zone_id, boundary_id)
+        message = check_zone(new_zone_id, boundary_name)
         text += ', ' + message if text else message
 
     new_boundary_id = payload.get('new_boundary_id', '')
@@ -184,7 +195,7 @@ def lambda_handler(event, context):
 
     new_resource_name = payload.get('new_resource_name', '')
     if new_resource_name:
-        message = check_resource(new_resource_name, zone_id)
+        message = check_resource(new_resource_name, boundary_name, zone_id)
         text += ', ' + message if text else message
 
     if text:
@@ -196,9 +207,9 @@ def lambda_handler(event, context):
             KeyConditionExpression=Key('resource_name').eq(resource) & Key('zone_id').eq(zone_id)
         )
 
-        for zones in data['Items']:
-            if zones['boundary_id'] == str(boundary_id):
-                zone_data = zones
+        for z in data['Items']:
+            if z['boundary_name'] == str(boundary_name):
+                zone_data = z
                 break
 
         if zone_data:
