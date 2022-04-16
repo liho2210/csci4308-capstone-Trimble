@@ -134,15 +134,16 @@
       //   [40.00809997595765, -105.26950478553772],
       //   [40.00448405250004, -105.26968717575073],
       // ];
+      // console.log(JSON.parse(localStorage.getItem("bound_poly")));
+      var latlngs = JSON.parse(localStorage.getItem("bound_poly"));
       var map = L.map("map", { zoomControl: false }).setView(
-        [40.015, -105.2705],
+        // [40.015, -105.2705],
         // localStorage.getItem("bound_poly"),
-        // latlngs[0],
-        13
+        latlngs[0],
+        15
       );
-      // var latlngs = localStorage.getItem("bound_poly");
 
-      // var polygon = L.polygon(latlngs, { color: "red" });
+      var polygon = L.polygon(latlngs, { color: "red" });
       // load a tile layer
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
@@ -151,7 +152,7 @@
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
-      // polygon.addTo(map);
+      polygon.addTo(map);
     </script>
   </body>
 </html>
