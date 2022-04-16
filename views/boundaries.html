@@ -27,7 +27,7 @@
             src="https://raw.githubusercontent.com/liho2210/csci4308-capstone-Trimble/front_end_initial/views/img/icons8-plus-96.png"
             width="48"
             height="48"
-            onclick="create_boundary('UMC Project', 'This polygon is a test66', '[[-105.268026, 40.008357], [-105.267992, 40.010473], [-105.265692, 40.010451], [-105.265626, 40.008405]]')"
+            onclick="create_boundary('UMC Project', 'This polygon is a test66', '[[40.0103, -105.2715],[40.0067, -105.2715],[40.0072, -105.2628],]')"
           />
           <!-- <button onclick="create_boundary()">+</but ton> -->
         </div>
@@ -133,15 +133,15 @@
     <script>
       // initialize the map
       var map = L.map("map", { zoomControl: false }).setView(
-        [40.015, -105.2705],
-        13
+        [40.009, -105.2694],
+        17
       );
 
       var latlngs = [
         [40.0103, -105.2715],
         [40.0067, -105.2715],
-        // [40.009, -105.2697],
-        [40.0072, -105.2628],
+        [40.0067, -105.2628],
+        [40.0103, -105.2628],
       ];
 
       var polygon = L.polygon(latlngs, { color: "red" });

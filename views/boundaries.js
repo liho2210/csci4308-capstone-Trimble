@@ -6,7 +6,7 @@ $(function() {
           data: {},
           success: function(boundaries) {
             $.each(boundaries, function(i, boundary){
-              $boundaries.append(`<a href="zones.html" onclick="localStorage.setItem('boundary', '${boundary.id}')";>${boundary.name}</a>`);
+              $boundaries.append(`<a href="zones.html" onclick="localStorage.setItem('boundary', '${boundary.id}'); localStorage.setItem('bound_poly', '${boundary.polygon}')";>${boundary.name}</a>`);
             });
           },
           // Error handling 

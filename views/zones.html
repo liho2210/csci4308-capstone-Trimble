@@ -26,7 +26,7 @@
             src="https://raw.githubusercontent.com/liho2210/csci4308-capstone-Trimble/front_end_initial/views/img/icons8-plus-96.png"
             width="48"
             height="48"
-            onclick="create_zone('5', '[[-105.268,40.006],[-105.268,40.005],[-105.266,40.005],[-105.266,40.006]]', 'descirp')"
+            onclick="create_zone('5', '[[40.0102, -105.2714],[40.0068, -105.2714],[40.0072, -105.2629]]', 'descirp')"
           />
         </div>
       </div>
@@ -129,11 +129,20 @@
     <script src="zones.js"></script>
     <script>
       // initialize the map
+      // var latlngs = [
+      //   [40.008198589369, -105.269376039505],
+      //   [40.00809997595765, -105.26950478553772],
+      //   [40.00448405250004, -105.26968717575073],
+      // ];
       var map = L.map("map", { zoomControl: false }).setView(
         [40.015, -105.2705],
+        // localStorage.getItem("bound_poly"),
+        // latlngs[0],
         13
       );
+      // var latlngs = localStorage.getItem("bound_poly");
 
+      // var polygon = L.polygon(latlngs, { color: "red" });
       // load a tile layer
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
@@ -142,6 +151,7 @@
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
+      // polygon.addTo(map);
     </script>
   </body>
 </html>
