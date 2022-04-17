@@ -35,7 +35,7 @@ $.ajax({
   url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/"+localStorage.getItem("boundary")+"/zones",
   data: `{
     "zone_id": "${zone_id}",
-    "polygon": "${zone_polygon}",
+    "polygon": ${zone_polygon},
     "description": "${zone_desc}"
   }`,
   success: function(zones) {
