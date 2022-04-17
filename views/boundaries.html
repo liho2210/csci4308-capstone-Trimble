@@ -35,40 +35,7 @@
       <div class="container_button">
         <div class="list">
           <ul id="boundaries"></ul>
-          <!-- <ul id="boundaries"></ul> -->
         </div>
-
-        <!-- <a href="zones.html" style="display: inline">Boundary 001</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div>
-    </div>
-    <div class="container_button">
-      <a href="zones.html" style="display: inline">Boundary 002</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div>
-    </div>
-    <div class="container_button">
-      <a href="zones.html" style="display: inline">Boundary 003</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div> -->
       </div>
 
       <div class="nav_footer">
@@ -83,77 +50,36 @@
           <a href="index.html">Back</a>
         </div>
       </div>
-
-      <div class="modal" id="myModal" role="dialog">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">
-                &times;
-              </button>
-              <h4 class="modal-title">Coordinates</h4>
-            </div>
-
-            <div class="modal-body">
-              <label for="project">Latitude:</label>
-              <select name="project" id="project"></select>
-            </div>
-
-            <div class="modal-body">
-              <label for="project">Longitude:</label>
-              <select name="project" id="project"></select>
-            </div>
-
-            <div class="modal-body"></div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-default"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-default"
-                data-dismiss="modal"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+
     <script src="boundaries.js"></script>
     <script>
       // initialize the map
       var map = L.map("map", { zoomControl: false }).setView(
+        // initial coordinates
         [40.009, -105.2694],
+        // initial zoom magnitude
         15
       );
 
-      // var latlngs = [
-      //   [40.0103, -105.2715],
-      //   [40.0067, -105.2715],
-      //   [40.0067, -105.2628],
-      //   [40.0103, -105.2628],
-      // ];
+      // parse array of all boundaries
+      var polys_bound = JSON.parse(localStorage.getItem("bound_polys"));
+      console.log(polys_bound);
 
-      // var polygon = L.polygon(latlngs, { color: "red" });
       // load a tile layer
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
         attribution:
           'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
 
-      // polygon.addTo(map);
-      // L.addLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",).addTo(map)
+      // for each boundary, parse and add to map
+      for (let i = 0; i < polys_bound.length; i++) {
+        console.log(i, polys_bound[i]);
+        var polygon = L.polygon(JSON.parse(polys_bound[i]), { color: "red" });
+        polygon.addTo(map);
+      }
     </script>
   </body>
 </html>

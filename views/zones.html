@@ -36,38 +36,6 @@
         <div class="list">
           <ul id="zones"></ul>
         </div>
-
-        <!-- <a href="zones.html" style="display: inline">Boundary 001</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div>
-    </div>
-    <div class="container_button">
-      <a href="zones.html" style="display: inline">Boundary 002</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div>
-    </div>
-    <div class="container_button">
-      <a href="zones.html" style="display: inline">Boundary 003</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div> -->
       </div>
 
       <div class="nav_footer">
@@ -82,77 +50,43 @@
           <a href="boundaries.html">Back</a>
         </div>
       </div>
-
-      <div class="modal" id="myModal" role="dialog">
-        <div class="modal-dialog">
-          <!-- Modal content-->
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">
-                &times;
-              </button>
-              <h4 class="modal-title">Coordinates</h4>
-            </div>
-
-            <div class="modal-body">
-              <label for="project">Latitude:</label>
-              <select name="project" id="project"></select>
-            </div>
-
-            <div class="modal-body">
-              <label for="project">Longitude:</label>
-              <select name="project" id="project"></select>
-            </div>
-
-            <div class="modal-body"></div>
-
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-default"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn btn-default"
-                data-dismiss="modal"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <script src="zones.js"></script>
     <script>
-      // initialize the map
-      // var latlngs = [
-      //   [40.008198589369, -105.269376039505],
-      //   [40.00809997595765, -105.26950478553772],
-      //   [40.00448405250004, -105.26968717575073],
-      // ];
-      // console.log(JSON.parse(localStorage.getItem("bound_poly")));
+      // parse current boundary polygon
       var latlngs = JSON.parse(localStorage.getItem("bound_poly"));
+
+      // initialize map
       var map = L.map("map", { zoomControl: false }).setView(
-        // [40.015, -105.2705],
-        // localStorage.getItem("bound_poly"),
+        // initial coordinates
         latlngs[0],
+        // intial zoom magnitude
         15
       );
 
+      // parse array of all zone in current boundary
+      var polys_zone = JSON.parse(localStorage.getItem("zone_polys"));
+
+      // create map object for current boundary
       var polygon = L.polygon(latlngs, { color: "red" });
+
       // load a tile layer
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
         attribution:
           'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
+
+      // add current boundary polygon to map
       polygon.addTo(map);
+
+      // for each zone in current boundary, parse and add to map
+      for (let i = 0; i < polys_zone.length; i++) {
+        console.log(i, polys_zone[i]);
+        var polygon = L.polygon(JSON.parse(polys_zone[i]), { color: "yellow" });
+        polygon.addTo(map);
+      }
     </script>
   </body>
 </html>

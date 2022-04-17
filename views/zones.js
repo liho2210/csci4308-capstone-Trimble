@@ -1,4 +1,9 @@
+// array to store zone polygons
+var zone_polys = [];
+
+// initalize function
 $(function() {
+  // html list to store href links and onclick functionality
   var $zones = $('#zones');
   $.ajax({
           type: "GET",
@@ -6,16 +11,19 @@ $(function() {
           data: {},
           success: function(zones) {
             $.each(zones, function(i, zone){
-              $zones.append(`<a href="resources.html" onclick="localStorage.setItem('zone', '${zone.zone_id}')";>${zone.zone_id}</a>`);
+              // add all polygons to array
+              zone_polys.push(zone.polygon);
+              // add dynamic links to html list
+              $zones.append(`<a href="resources.html" onclick="localStorage.setItem('zone', '${zone.zone_id}'); localStorage.setItem('zone_poly', '${zone.polygon}')";>${zone.zone_id}</a>`);
             });
+            // store polygon array to local storage
+            localStorage.setItem('zone_polys', JSON.stringify(zone_polys));
           },
-
           // Error handling 
           error: function (error) {
               console.log(`Error ${error}`);
           }
   });
-  console.log(localStorage.getItem("bound_poly"));
 })
 
 function create_zone(){

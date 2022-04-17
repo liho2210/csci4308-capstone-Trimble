@@ -22,13 +22,13 @@
       <div>
         <a style="display: inline">Resources</a>
         <div class="add_button">
-          <!-- <a href="" style="display: inline;">+</a> -->
           <img
             src="https://raw.githubusercontent.com/liho2210/csci4308-capstone-Trimble/front_end_initial/views/img/icons8-plus-96.png"
             width="48"
             height="48"
-            onclick="create_resource('brick', 'material', 'arrived', '50', 'building', '[-105.267,40.006]')"
+            onclick="create_resource()"
           />
+          <!-- onclick="create_resource('brick', 'material', 'arrived', '50', 'building', '[-105.267,40.006]')" -->
         </div>
       </div>
       <hr />
@@ -37,38 +37,6 @@
         <div class="list">
           <ul id="resources"></ul>
         </div>
-
-        <!-- <a href="zones.html" style="display: inline">Boundary 001</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div>
-    </div>
-    <div class="container_button">
-      <a href="zones.html" style="display: inline">Boundary 002</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div>
-    </div>
-    <div class="container_button">
-      <a href="zones.html" style="display: inline">Boundary 003</a>
-      <div
-        class="edit"
-        data-toggle="modal"
-        style="display: inline"
-        data-target="#myModal"
-      >
-        edit
-      </div> -->
       </div>
 
       <div class="nav_footer">
@@ -129,20 +97,45 @@
     </div>
     <script src="resources.js"></script>
     <script>
-      // initialize the map
+      // parse current boundary and zone polygons
+      var latlngs = JSON.parse(localStorage.getItem("bound_poly"));
+      var latlngs2 = JSON.parse(localStorage.getItem("zone_poly"));
+
+      // parse array of resources in current bound and zone
+      var points_rec = JSON.parse(localStorage.getItem("rec_polys"));
+
+      // initialize map
       var map = L.map("map", { zoomControl: false }).setView(
-        [40.015, -105.2705],
-        13
+        // initial coordinates
+        latlngs[0],
+        // inital zoom magnitude
+        15
       );
+
+      // create map object for current boundary and zone
+      var polygon = L.polygon(latlngs, { color: "red" });
+      var polygon2 = L.polygon(latlngs2, { color: "yellow" });
 
       // load a tile layer
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        // L.tileLayer("http://tiles.mapc.org/basemap/{z}/{x}/{y}.png", {
         attribution:
           'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
+
+      // add current boundary and zone polygons to map
+      polygon.addTo(map);
+      polygon2.addTo(map);
+
+      // for each resource in current boundary and zone, parse and to map
+      for (let i = 0; i < points_rec.length; i++) {
+        console.log(i, points_rec[i]);
+        var point = points_rec[i];
+        // slice out extra brackets
+        var point2 = JSON.parse(point.slice(1, -1));
+        L.marker(point2).addTo(map);
+      }
     </script>
   </body>
 </html>
