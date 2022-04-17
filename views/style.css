@@ -123,8 +123,11 @@ body {
 
 .center_title {
   position: relative;
-  -ms-transform: translateX(-35%);
-  transform: translateX(-35%);
+  -ms-transform: translateX(-44.5%);
+  transform: translateX(-44.5%);
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   /* 
     -ms-transform: translateY(-25%);
     transform: translateY(-25%); */
@@ -370,4 +373,20 @@ body {
     height: 500px; */
   width: 100%;
   height: 100%;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+h2:after,
+h2:before {
+  content: "";
+  width: 150px;
+  height: 2px;
+  background: rgb(0, 106, 178);
+  margin: 0 10px;
 }
