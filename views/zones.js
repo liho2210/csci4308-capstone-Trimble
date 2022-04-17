@@ -24,23 +24,19 @@ $(function() {
               console.log(`Error ${error}`);
           }
   });
+  console.log(localStorage.getItem("boundary"));
+  console.log(localStorage.getItem("zone"));
+  console.log(JSON.parse(localStorage.getItem("rec_polys")));
 })
 
-function create_zone(){
+function create_zone(zone_id, zone_polygon, zone_desc){
 $.ajax({
   type: "POST",
   url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/"+localStorage.getItem("boundary")+"/zones",
-  // data: `{
-  //   "zone_id": "${zone_id}",
-  //   "polygon": "${polygon}",
-  //   "description": "${description}"
-  // }`,
   data: `{
-    "zone_id": "5",
-    "polygon": [
-      [40.0102, -105.2714],[40.0068, -105.2714],[40.0072, -105.2629]
-    ],
-    "description": "These coordinates roughly outline Farrand Field"
+    "zone_id": "${zone_id}",
+    "polygon": "${zone_polygon}",
+    "description": "${zone_desc}"
   }`,
   success: function(zones) {
     console.log('success')

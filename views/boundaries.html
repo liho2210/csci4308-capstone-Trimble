@@ -23,10 +23,11 @@
         <a style="display: inline">Boundaries</a>
         <div class="add_button">
           <img
+            data-toggle="modal"
+            data-target="#myModal2"
             src="https://raw.githubusercontent.com/liho2210/csci4308-capstone-Trimble/front_end_initial/views/img/icons8-plus-96.png"
             width="48"
             height="48"
-            onclick="create_boundary('UMC Project', 'This polygon is a test66', '[[40.0103, -105.2715],[40.0067, -105.2715],[40.0072, -105.2628],]')"
           />
         </div>
         <hr />
@@ -50,10 +51,67 @@
           <a href="index.html">Back</a>
         </div>
       </div>
+      <div class="modal" id="myModal2" role="dialog" data-backdrop="">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+              <h4 class="modal-title">New Boundary:</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Boundary Name:</label>
+              <!-- <select name="project" id="project"></select> -->
+              <input type="text" name="name" id="bound_name" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Description:</label>
+              <input type="paragraph" name="desc" id="bound_desc" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Polygon:</label>
+              <input type="text" name="polygon" id="bound_polygon" required />
+            </div>
+            <!-- 40.0080° N, 105.2675° W -->
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                onclick="saveinput()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="boundaries.js"></script>
     <script>
+      function saveinput() {
+        var bound_name = document.getElementById("bound_name").value;
+        var bound_desc = document.getElementById("bound_desc").value;
+        var bound_polygon = document.getElementById("bound_polygon").value;
+        create_boundary(bound_name, bound_desc, bound_polygon);
+      }
+
       // initialize the map
       var map = L.map("map", { zoomControl: false }).setView(
         // initial coordinates

@@ -23,12 +23,14 @@
         <a style="display: inline">Resources</a>
         <div class="add_button">
           <img
+            data-toggle="modal"
+            data-target="#myModal2"
             src="https://raw.githubusercontent.com/liho2210/csci4308-capstone-Trimble/front_end_initial/views/img/icons8-plus-96.png"
             width="48"
             height="48"
-            onclick="create_resource()"
           />
           <!-- onclick="create_resource('brick', 'material', 'arrived', '50', 'building', '[-105.267,40.006]')" -->
+          <!-- onclick="create_resource()" -->
         </div>
       </div>
       <hr />
@@ -52,6 +54,85 @@
         </div>
       </div>
 
+      <div class="modal" id="myModal2" role="dialog" data-backdrop="">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+              <h4 class="modal-title">New Resource:</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Resource Name:</label>
+              <!-- <select name="project" id="project"></select> -->
+              <input type="text" name="name" id="rec_name" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Resource Type:</label>
+              <select name="project" id="rec_type">
+                <option value="Supplies">Supplies</option>
+                <option value="Tools">Tools</option>
+                <option value="Material">Material</option>
+                <option value="Personnel">Personnel</option>
+              </select>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Resource Status:</label>
+              <select name="project" id="rec_stat">
+                <option value="Recieved">Recieved</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Expired">Expired</option>
+                <option value="In Use">In Use</option>
+              </select>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Amount:</label>
+              <input type="number" name="amount" id="rec_cnt" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Description:</label>
+              <input type="paragraph" name="desc" id="rec_desc" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Latitude:</label>
+              <input type="number" name="Latitude" id="rec_lat" required />
+            </div>
+            <!-- 40.0080° N, 105.2675° W -->
+            <div class="modal-body">
+              <label for="project">Longitude:</label>
+              <input type="number" name="Longitude" id="rec_lon" required />
+            </div>
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                onclick="saveinput()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="modal" id="myModal" role="dialog" data-backdrop="">
         <div class="modal-dialog">
           <!-- Modal content-->
@@ -97,6 +178,24 @@
     </div>
     <script src="resources.js"></script>
     <script>
+      function saveinput() {
+        var rec_name = document.getElementById("rec_name").value;
+        var rec_type = document.getElementById("rec_type").value;
+        var rec_stat = document.getElementById("rec_stat").value;
+        var rec_cnt = document.getElementById("rec_cnt").value;
+        var rec_desc = document.getElementById("rec_desc").value;
+        var rec_lat = document.getElementById("rec_lat").value;
+        var rec_lon = document.getElementById("rec_lon").value;
+        create_resource(
+          rec_name,
+          rec_type,
+          rec_stat,
+          rec_cnt,
+          rec_desc,
+          rec_lat,
+          rec_lon
+        );
+      }
       // parse current boundary and zone polygons
       var latlngs = JSON.parse(localStorage.getItem("bound_poly"));
       var latlngs2 = JSON.parse(localStorage.getItem("zone_poly"));

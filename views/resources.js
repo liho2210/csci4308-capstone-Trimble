@@ -4,6 +4,7 @@ var rec_polys = [];
 // initalize function
 $(function() {
   // html list to store onclick/modal actions
+  rec_polys = [];
   var $resources = $('#resources');
   $.ajax({
           type: "GET",
@@ -13,6 +14,7 @@ $(function() {
             $.each(resources, function(i, resource){
               // add all resources to array
               rec_polys.push(resource.coordinates);
+              // if none added, clear rec_polys ************
               // add dynamic functions to html list
               $resources.append('<a data-toggle="modal" data-target="#myModal">'+resource.resource_name+'</a>');
             });
@@ -24,42 +26,25 @@ $(function() {
               console.log(`Error ${error}`);
           }
   });
+  console.log(localStorage.getItem("boundary"));
+  console.log(localStorage.getItem("zone"));
+  console.log(JSON.parse(localStorage.getItem("rec_polys")));
 })
 
-// function create_resource(name, type, status, amount, description, coordinates){
-// $.ajax({
-//   type: "POST",
-//   url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/Middle+CU+Project/zones/2/resources",
-//   data: `{
-//     "resource_name": "${name}",
-//     "resource_type": "${type}",
-//     "resource_status": "${status}",
-//     "amount": "${amount}",
-//     "description": "${description}",
-//     "coordinates": "${coordinates}"
-//   }`,
-//   success: function(resources) {
-//     console.log('success')
-//   },
-//   error: function (error) {
-//       console.log(`Error ${error}`);
-//   },
-//   dataType: "json"
-// });
-// }
-function create_resource(){
+function create_resource(rec_name,rec_type,rec_stat,
+  rec_cnt, rec_desc, rec_lat,rec_lon){
   $.ajax({
     type: "POST",
-    url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/6fd85abc-2eb9-4ce1-9bf8-09ffa706f306/zones/5/resources",
+    url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/'+localStorage.getItem("boundary")+'/zones/'+localStorage.getItem("zone")+'/resources',
     data: `{
-      "resource_name": "Cement",
-      "resource_type": "Material",
-      "resource_status": "Arrived",
-      "amount": "50",
-      "description": "Used for building walls",
+      "resource_name": "${rec_name}",
+      "resource_type": "${rec_type}",
+      "resource_status": "${rec_stat}",
+      "amount": "${rec_cnt}",
+      "description": "${rec_desc}",
       "coordinates": [
-        [40.0087,
-        -105.2708] 
+        [${rec_lat},
+        ${rec_lon}] 
       ]
     }`,
     success: function(resources) {

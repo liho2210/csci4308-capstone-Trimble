@@ -24,16 +24,19 @@ $(function() {
               console.log(`Error ${error}`);
           }
   });
+  console.log(localStorage.getItem("boundary"));
+  console.log(localStorage.getItem("zone"));
+  console.log(JSON.parse(localStorage.getItem("bound_polys")));
 })
 
-function create_boundary(name, description, polygon){
+function create_boundary(bound_name, bound_desc, bound_polygon){
 $.ajax({
   type: "POST",
   url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary",
   data: `{
-    "name": "${name}",
-    "description": "${description}",
-    "polygon": "${polygon}",
+    "name": "${bound_name}",
+    "description": "${bound_desc}",
+    "polygon": "${bound_polygon}",
     "metadata": {
       "status": "in progress"
     }
