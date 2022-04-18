@@ -102,7 +102,7 @@ paths:
           description: All resources pointing to this boundary must be updated or deleted.
         404:
           description: Not Found
-  /boundary/{boundary_id}/events:
+  /boundaries/{boundary_id}/events:
     get:
       tags:
       - event
@@ -110,6 +110,67 @@ paths:
       description: Returns all event pertaining to a specific boundary
       parameters:
       - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        404:
+          description: Not Found
+  /boundaries/{boundary_id}/zone/{zone_id}/events:
+    get:
+      tags:
+      - event
+      summary: Get events by zone
+      description: Returns all events pertaining to a specific zone within a boundary
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        404:
+          description: Not Found
+  /boundaries/{boundary_id}/zone/{zone_id}/resources/{resource_name}:
+    get:
+      tags:
+      - event
+      summary: Get events by resource
+      description: Returns all events pertaining to a specific resource
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: resource_name
         in: path
         required: true
         schema:
