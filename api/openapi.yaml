@@ -503,24 +503,24 @@ components:
             type: integer
           example: [
             [
-                -105.268,
-                40.006
+                40.006,
+                -105.268
             ],
             [
-                -105.268,
-                40.005
+                40.005,
+                -105.268
             ],
             [
-                -105.266,
-                40.005
+                40.005,
+                -105.266
             ],
             [
-                -105.266,
-                40.006
+                40.006,
+               -105.266
             ],
             [
-                -105.268,
-                40.006
+                40.006,
+                -105.268
             ]
           ]
         description:
@@ -581,24 +581,24 @@ components:
             type: integer
           example: [
             [
-                -105.268,
-                40.006
+                40.006,
+                -105.268
             ],
             [
-                -105.268,
-                40.005
+                40.005,
+                -105.268
             ],
             [
-                -105.266,
-                40.005
+                40.005,
+                -105.266
             ],
             [
-                -105.266,
-                40.006
+                40.006,
+               -105.266
             ],
             [
-                -105.268,
-                40.006
+                40.006,
+                -105.268
             ]
           ]
         description:
@@ -642,8 +642,8 @@ components:
         coordinates:
           type: string
           format: GeoJson Polygon
-          description: Coordinates of resource location in x,y order
-          example: [-105.267, 40.006]
+          description: Coordinates of resource location in lat, long order
+          example: [40.006, -105.267]
         date_created:
           type: string
           format: date-time
@@ -677,8 +677,12 @@ components:
           new_coordinates:
             type: string
             format: GeoJson Polygon
-            description: Coordinates of resource location in x,y order
-            example: [-105.267, 40.006]
+            description: Coordinates of resource location in lat,long order
+            example: [40.006, -105.267]
+          new_resource_status:
+            type: string
+            description: New resource status
+            example: Left warehouse at noon on April 20th 2022
           resource_type:
             type: string
             description: Type of Resource
