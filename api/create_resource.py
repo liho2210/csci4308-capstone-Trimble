@@ -9,6 +9,7 @@ dynamodb = boto3.resource('dynamodb')
 boundary_table = dynamodb.Table('boundary')
 resource_table = dynamodb.Table('resource')
 zone_table = dynamodb.Table('zone')
+client = boto3.client('lambda')
 
 
 def render(status_code, text=None, content=None):
@@ -69,8 +70,8 @@ def insert_data(boundary_name, zone_id, payload):
                 zone_coords.append(tuple(coord))
 
             for point in payload['coordinates']:
-                x, y = float(point[0]), float(point[1])
-                if not point_inside_polygon(x, y, zone_coords):
+                x, y = float(point[1]), float(point[0])
+                if not point_inside_polygon(y, x, zone_coords):
                     return (400, 'Location of resource is not within boundary and zone')
 
             resource_table.put_item(
@@ -131,6 +132,14 @@ def lambda_handler(event, context):
             return render(409, text='Resource is already created under zone_id and boundary_id')
         else:
             status_code, message = insert_data(boundary_name, zone_id, payload)
+            path_data = {'boundary_name': boundary_name, 'zone_id': zone_id}
+            event_data = {**payload, **path_data}
+            response = client.invoke(
+                FunctionName='arn:aws:lambda:us-east-1:102618460408:function:create_event',
+                InvocationType='RequestResponse',
+                Payload=json.dumps(event_data)
+            )
+
 
     except Exception as e:
         raise Exception(e)
