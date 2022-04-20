@@ -9,6 +9,7 @@ dynamodb = boto3.resource('dynamodb')
 boundary_table = dynamodb.Table('boundary')
 zone_table = dynamodb.Table('zone')
 resource_table = dynamodb.Table('resource')
+client = boto3.client('lambda')
 
 
 def render(status_code, text=None, content=None):
@@ -112,8 +113,8 @@ def check_boundary(new_boundary_id):
     if 'Item' not in boundary_data:
         message = 'Boundary does not exist'
     else:
-        new_boundary_name = boundary_data['Item'].get('name', '')
-    return message, new_boundary_name
+        boundary_name = boundary_data['Item'].get('name', '')
+    return message, boundary_name
 
 
 def check_resource(new_resource_name, boundary_name, zone_id):
@@ -137,7 +138,7 @@ def update_data(data, payload, new_boundary_name=None):
             'zone_id': str(payload.get('new_zone_id', data['zone_id'])),
             'resource_name': str(payload.get('new_resource_name', data['resource_name'])),
             'resource_type': str(payload.get('resource_type', data['resource_type'])),
-            'resource_status': str(payload.get('resource_status', data['resource_status'])),
+            'resource_status': str(payload.get('new_resource_status', data['resource_status'])),
             'description': payload.get('description', data['description']),
             'coordinates': str(payload.get('coordinates', data['coordinates'])),
             'amount': str(payload.get('amount', data['amount'])),
@@ -153,7 +154,7 @@ def update_data(data, payload, new_boundary_name=None):
             UpdateExpression=a,
             ExpressionAttributeValues=dict(v)
         )
-        return (200, "OK")
+        return (200, "OK", d)
 
     except Exception as e:
         raise Exception(e)
@@ -170,6 +171,7 @@ def lambda_handler(event, context):
     text = ''
     new_boundary_name = ''
     zone_data = []
+    d = {}
 
     boundary_data = boundary_table.get_item(Key={'id': boundary_id})
 
@@ -213,10 +215,19 @@ def lambda_handler(event, context):
                 break
 
         if zone_data:
-            update_data(zone_data, payload, new_boundary_name)
-            return render(200, 'OK')
+            status_code, message, d = update_data(zone_data, payload, new_boundary_name)
+            if payload.get('new_resource_status'):
+                prev_resource_status = {'prev_resource_status': zone_data['resource_status']}
+                event_data = {**d, **prev_resource_status}
+                response = client.invoke(
+                    FunctionName='arn:aws:lambda:us-east-1:102618460408:function:create_event',
+                    InvocationType='RequestResponse',
+                    Payload=json.dumps(event_data)
+                )
+            return render(status_code, message)
         else:
             return render(409, text='Resource does not exist')
+
 
     except Exception as e:
         raise Exception(e)
