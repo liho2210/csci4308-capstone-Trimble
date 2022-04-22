@@ -43,6 +43,7 @@ $.ajax({
   }`,
   success: function(boundaries) {
     console.log('success')
+    window.location.reload();
   },
   error: function (error) {
       console.log(`Error ${error}`);

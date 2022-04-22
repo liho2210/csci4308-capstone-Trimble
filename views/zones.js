@@ -22,11 +22,24 @@ $(function() {
           // Error handling 
           error: function (error) {
               console.log(`Error ${error}`);
-          }
+              localStorage.setItem('zone_polys', JSON.stringify(zone_polys));
+          },
   });
   console.log(localStorage.getItem("boundary"));
-  console.log(localStorage.getItem("zone"));
-  console.log(JSON.parse(localStorage.getItem("rec_polys")));
+  // console.log(localStorage.getItem("zone"));
+  // console.log(JSON.parse(localStorage.getItem("rec_polys")));
+  
+  console.log(zone_polys);
+  // location.reload();
+  // window.onload = function () {
+  //   if (! localStorage.justOnce) {
+  //       localStorage.setItem("justOnce", "true");
+        
+  //   }
+  // }
+  // setTimeout(() => window.location.reload(), 2);
+  
+  // setTimeout(location.reload.bind(location), 600);
 })
 
 function create_zone(zone_id, zone_polygon, zone_desc){
@@ -47,3 +60,4 @@ $.ajax({
   dataType: "json"
 });
 }
+
