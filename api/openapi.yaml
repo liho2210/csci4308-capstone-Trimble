@@ -129,7 +129,7 @@ paths:
     get:
       tags:
       - event
-      summary: Get events by zone
+      summary: Get events by boundary and zone
       description: Returns all events pertaining to a specific zone within a boundary
       parameters:
       - name: boundary_id
@@ -138,39 +138,6 @@ paths:
         schema:
           type: string
       - name: zone_id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        200:
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Event'
-        404:
-          description: Not Found
-  /boundaries/{boundary_id}/zone/{zone_id}/resources/{resource_name}:
-    get:
-      tags:
-      - event
-      summary: Get events by resource
-      description: Returns all events pertaining to a specific resource
-      parameters:
-      - name: boundary_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: zone_id
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: resource_name
         in: path
         required: true
         schema:
@@ -550,22 +517,33 @@ components:
           type: string
           readOnly: true
           example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
-        boundary_id:
+        boundary_name:
           type: string
-          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
+          example: "Folsom Field"
         zone_id:
           type: string
-          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
-        resource_id:
+          example: "2"
+        resource_name:
           type: string
-          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
-        message:
+          example: "bricks"
+        description:
           type: string
           example: "Bricks amount changed from 500 to 50"
-        date_created:
+        time_created:
           type: string
           format: date-time
           readOnly: true
+        prev_resource_status:
+          type: string
+          example: "Waiting to be approved"
+        curr_resource_status:
+          type: string
+          example: "Waiting to be approved"
+        metadata:
+          type: object
+          description: Captures any additional necessary information about a boundary
+          example: {example: example}
+          maxItems: 10
     ZonePatch:
       type: object
       properties:
