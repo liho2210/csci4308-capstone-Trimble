@@ -104,8 +104,7 @@
     </div>
     <script src="zones.js"></script>
     <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
-    
-    
+
     <script>
       function saveinput() {
         var zone_id = document.getElementById("zone_id").value;
@@ -137,38 +136,6 @@
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
-      
-//        var toolbar = L.Toolbar(); //for toolbar to be used by user..
-//        toolbar.addToolbar(map);
-      
-//         var drawnItems = new L.FeatureGroup();
-//          map.addLayer(drawnItems);
-//          var drawControl = new L.Control.Draw({
-//              edit: {
-//                  featureGroup: drawnItems
-//              }
-//          });
-//          map.addControl(drawControl);
-      
-//       var drawControl = new L.Control.Draw({
-//        draw: {
-//         polygon: {
-//          shapeOptions: {
-//           color: 'purple'
-//          },
-//         },
-//        },
-//                 edit: {
-//                     featureGroup: drawnItems
-//                 }
-//             });
-//         map.addControl(drawControl);
-      
-//         map.on('draw:created', function (e) {
-//             var type = e.layerType,
-//                 layer = e.layer;
-//             drawnItems.addLayer(layer);
-//         });
 
       // add current boundary polygon to map
       polygon.addTo(map);
@@ -178,7 +145,7 @@
         console.log(i, polys_zone[i]);
         var polygon = L.polygon(JSON.parse(polys_zone[i]), { color: "yellow" });
         polygon.addTo(map);
-       }
+      }
     </script>
   </body>
 </html>
