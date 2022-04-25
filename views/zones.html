@@ -150,6 +150,20 @@
          });
          map.addControl(drawControl);
       
+      var drawControl = new L.Control.Draw({
+       draw: {
+        polygon: {
+         shapeOptions: {
+          color: 'purple'
+         },
+        },
+       },
+                edit: {
+                    featureGroup: drawnItems
+                }
+            });
+        map.addControl(drawControl);
+      
         map.on('draw:created', function (e) {
             var type = e.layerType,
                 layer = e.layer;
