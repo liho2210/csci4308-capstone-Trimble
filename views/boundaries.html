@@ -112,7 +112,11 @@
       }
 
       // initialize the map
-      var map = L.map("map", { zoomControl: false }).setView(
+      var map = L.map(
+        "map",
+        { zoomControl: false },
+        { drawControl: true }
+      ).setView(
         // initial coordinates
         [40.009, -105.2694],
         // initial zoom magnitude
@@ -127,6 +131,8 @@
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
           'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
+        // attribution:
+        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
