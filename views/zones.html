@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+
+  <body onload="get_events()">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+    <div id="map"></div>
+    <div id="mySidenav" class="sidenav">
+      <div>
+        <a style="display: inline">Zones</a>
+        <div class="add_button">
+          <img
+            data-toggle="modal"
+            data-target="#myModal2"
+            src="img/icons8-plus-96.png"
+            width="48"
+            height="48"
+          />
+        </div>
+      </div>
+      <hr />
+
+      <div class="container_button">
+        <div class="list">
+          <ul id="zones"></ul>
+        </div>
+      </div>
+
+      <div class="nav_footer">
+        <div class="footer_bar">
+          <hr />
+        </div>
+        <div class="logout">
+          <a href="index.html">Logout</a>
+        </div>
+
+        <div class="back">
+          <a href="boundaries.html">Back</a>
+        </div>
+      </div>
+      <div class="modal" id="myModal2" role="dialog" data-backdrop="">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+              <h4 class="modal-title">New Zone:</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Zone Id:</label>
+              <!-- <select name="project" id="project"></select> -->
+              <input type="text" name="id" id="zone_id" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Description:</label>
+              <input type="paragraph" name="desc" id="zone_desc" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Polygon:</label>
+              <input type="text" name="polygon" id="zone_polygon" required />
+            </div>
+            <!-- 40.0080° N, 105.2675° W -->
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                onclick="saveinput()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="event_log" class="events">
+      <b class="event_title"
+        >Event Log
+        <hr />
+      </b>
+      <ul id="events" class="event_list" style="list-style-type: disc"></ul>
+    </div>
+    <script src="zones.js"></script>
+    <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
+
+    <script>
+      function saveinput() {
+        var zone_id = document.getElementById("zone_id").value;
+        var zone_desc = document.getElementById("zone_desc").value;
+        var zone_polygon = document.getElementById("zone_polygon").value;
+        create_zone(zone_id, zone_polygon, zone_desc);
+      }
+      // parse current boundary polygon
+      var latlngs = JSON.parse(localStorage.getItem("bound_poly"));
+
+      // initialize map
+      var map = L.map("map", { zoomControl: false }).setView(
+        // initial coordinates
+        latlngs[0],
+        // intial zoom magnitude
+        15
+      );
+
+      // parse array of all zone in current boundary
+      var polys_zone = JSON.parse(localStorage.getItem("zone_polys"));
+
+      // create map object for current boundary
+      var polygon = L.polygon(latlngs, { color: "red" });
+
+      // load a tile layer
+      L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
+        maxZoom: 17,
+        minZoom: 9,
+      }).addTo(map);
+
+      // add current boundary polygon to map
+      polygon.addTo(map);
+
+      var editableLayers = new L.FeatureGroup();
+      map.addLayer(editableLayers);
+
+      var drawPluginOptions = {
+        position: "bottomright",
+        draw: {
+          polygon: {
+            allowIntersection: false, // Restricts shapes to simple polygons
+            drawError: {
+              color: "#e1e100", // Color the shape will turn when intersects
+              message: "<strong>Oh snap!<strong> you can't draw that!", // Message that will show when intersect
+            },
+            shapeOptions: {
+              color: "#97009c",
+            },
+          },
+          // disable toolbar item by setting it to false
+          polyline: false,
+          circle: false, // Turns off this drawing tool
+          rectangle: false,
+          marker: false,
+        },
+        edit: {
+          featureGroup: editableLayers, //REQUIRED!!
+          remove: false,
+        },
+      };
+
+      // Initialise the draw control and pass it the FeatureGroup of editable layers
+      var drawControl = new L.Control.Draw(drawPluginOptions);
+      map.addControl(drawControl);
+
+      var editableLayers = new L.FeatureGroup();
+      map.addLayer(editableLayers);
+
+      map.on("draw:created", function (e) {
+        var type = e.layerType,
+          layer = e.layer;
+
+        if (type === "marker") {
+          layer.bindPopup("A popup!");
+        }
+
+        editableLayers.addLayer(layer);
+      });
+
+      // for each zone in current boundary, parse and add to map
+      for (let i = 0; i < polys_zone.length; i++) {
+        console.log(i, polys_zone[i]);
+        var polygon = L.polygon(JSON.parse(polys_zone[i]), { color: "yellow" });
+        polygon.addTo(map);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+    <div id="map"></div>
+    <div id="mySidenav" class="sidenav">
+      <div>
+        <a style="display: inline">Boundaries</a>
+        <div class="add_button">
+          <img
+            data-toggle="modal"
+            data-target="#myModal2"
+            src="img/icons8-plus-96.png"
+            width="48"
+            height="48"
+          />
+        </div>
+        <hr />
+      </div>
+
+      <div class="container_button">
+        <div class="list">
+          <ul id="boundaries"></ul>
+        </div>
+      </div>
+
+      <div class="nav_footer">
+        <div class="footer_bar">
+          <hr />
+        </div>
+        <div class="logout">
+          <a href="index.html">Logout</a>
+        </div>
+
+        <div class="back">
+          <a href="index.html">Back</a>
+        </div>
+      </div>
+      <div class="modal" id="myModal2" role="dialog" data-backdrop="">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+              <h4 class="modal-title">New Boundary:</h4>
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Boundary Name:</label>
+              <!-- <select name="project" id="project"></select> -->
+              <input type="text" name="name" id="bound_name" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Description:</label>
+              <input type="paragraph" name="desc" id="bound_desc" required />
+            </div>
+
+            <div class="modal-body">
+              <label for="project">Polygon:</label>
+              <input type="text" name="polygon" id="bound_polygon" required />
+            </div>
+            <!-- 40.0080° N, 105.2675° W -->
+
+            <div class="modal-body"></div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+                onclick="saveinput()"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="boundaries.js"></script>
+    <script>
+      function saveinput() {
+        var bound_name = document.getElementById("bound_name").value;
+        var bound_desc = document.getElementById("bound_desc").value;
+        var bound_polygon = document.getElementById("bound_polygon").value;
+        create_boundary(bound_name, bound_desc, bound_polygon);
+      }
+
+      // initialize the map
+      var map = L.map(
+        "map",
+        { zoomControl: false },
+        { drawControl: true }
+      ).setView(
+        // initial coordinates
+        [40.009, -105.2694],
+        // initial zoom magnitude
+        15
+      );
+
+      // parse array of all boundaries
+      var polys_bound = JSON.parse(localStorage.getItem("bound_polys"));
+      console.log(polys_bound);
+
+      // load a tile layer
+      L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
+        // attribution:
+        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 17,
+        minZoom: 9,
+      }).addTo(map);
+
+      var editableLayers = new L.FeatureGroup();
+      map.addLayer(editableLayers);
+
+      var drawPluginOptions = {
+        position: "bottomright",
+        draw: {
+          polygon: {
+            allowIntersection: false, // Restricts shapes to simple polygons
+            drawError: {
+              color: "#e1e100", // Color the shape will turn when intersects
+              message: "<strong>Oh snap!<strong> you can't draw that!", // Message that will show when intersect
+            },
+            shapeOptions: {
+              color: "#97009c",
+            },
+          },
+          // disable toolbar item by setting it to false
+          polyline: false,
+          circle: false, // Turns off this drawing tool
+          rectangle: false,
+          marker: false,
+        },
+        edit: {
+          featureGroup: editableLayers, //REQUIRED!!
+          remove: false,
+        },
+      };
+
+      // Initialise the draw control and pass it the FeatureGroup of editable layers
+      var drawControl = new L.Control.Draw(drawPluginOptions);
+      map.addControl(drawControl);
+
+      var editableLayers = new L.FeatureGroup();
+      map.addLayer(editableLayers);
+
+      map.on("draw:created", function (e) {
+        var type = e.layerType,
+          layer = e.layer;
+
+        if (type === "marker") {
+          layer.bindPopup("A popup!");
+        }
+
+        editableLayers.addLayer(layer);
+      });
+
+      // for each boundary, parse and add to map
+      for (let i = 0; i < polys_bound.length; i++) {
+        console.log(i, polys_bound[i]);
+        var polygon = L.polygon(JSON.parse(polys_bound[i]), { color: "red" });
+        polygon.addTo(map);
+      }
+    </script>
+  </body>
+</html>
