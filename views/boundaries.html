@@ -25,7 +25,7 @@
           <img
             data-toggle="modal"
             data-target="#myModal2"
-            src="https://raw.githubusercontent.com/liho2210/csci4308-capstone-Trimble/front_end_initial/views/img/icons8-plus-96.png"
+            src="img/icons8-plus-96.png"
             width="48"
             height="48"
           />
@@ -136,7 +136,7 @@
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);
-      
+
       var editableLayers = new L.FeatureGroup();
       map.addLayer(editableLayers);
 
@@ -182,7 +182,7 @@
 
         editableLayers.addLayer(layer);
       });
-      
+
       // for each boundary, parse and add to map
       for (let i = 0; i < polys_bound.length; i++) {
         console.log(i, polys_bound[i]);

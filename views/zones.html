@@ -26,7 +26,7 @@
           <img
             data-toggle="modal"
             data-target="#myModal2"
-            src="https://raw.githubusercontent.com/liho2210/csci4308-capstone-Trimble/front_end_initial/views/img/icons8-plus-96.png"
+            src="img/icons8-plus-96.png"
             width="48"
             height="48"
           />
@@ -147,7 +147,7 @@
 
       // add current boundary polygon to map
       polygon.addTo(map);
-      
+
       var editableLayers = new L.FeatureGroup();
       map.addLayer(editableLayers);
 
@@ -193,7 +193,7 @@
 
         editableLayers.addLayer(layer);
       });
-      
+
       // for each zone in current boundary, parse and add to map
       for (let i = 0; i < polys_zone.length; i++) {
         console.log(i, polys_zone[i]);
