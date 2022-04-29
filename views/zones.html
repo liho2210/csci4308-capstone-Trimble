@@ -16,7 +16,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
 
-  <body>
+  <body onload="get_events()">
     <div id="map"></div>
     <div id="mySidenav" class="sidenav">
       <div>
@@ -101,6 +101,11 @@
           </div>
         </div>
       </div>
+    </div>
+    <div id="event_log" class="events">
+      <b class="event_title">Log</b>
+      <hr />
+      <ul id="events"></ul>
     </div>
     <script src="zones.js"></script>
     <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>

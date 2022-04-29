@@ -1,5 +1,6 @@
 // array to store zone polygons
 var zone_polys = [];
+// var boundary_events = [];
 
 // initalize function
 $(function() {
@@ -61,3 +62,27 @@ $.ajax({
 });
 }
 
+function get_events(){
+  var $events = $('#events');
+    $.ajax({
+            type: "GET",
+            url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/'+localStorage.getItem("boundary")+'/events',
+            data: {},
+            success: function(events) {
+              $.each(events, function(i, event){
+                // add all polygons to array
+                // boundary_events.push(event);
+                // add dynamic links to html list
+                $events.append(event.name);
+              });
+              console.log($events)
+              // store polygon array to local storage
+              // localStorage.setItem('bound_events', JSON.stringify(boundary_events));
+            },
+            // Error handling 
+            error: function (error) {
+                console.log(`Error ${error}`);
+                // localStorage.setItem('zone_polys', JSON.stringify(zone_polys));
+            },
+    });
+  }
