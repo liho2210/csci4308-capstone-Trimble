@@ -396,7 +396,7 @@ h2:before {
   width: 250px;
   position: absolute;
   /* z-index: 1; */
-  top: 0;
+  bottom: 0;
   right: 0;
   background-color: rgba(31, 31, 31, 0.492);
   /* overflow-x: hidden; */
@@ -411,24 +411,3 @@ h2:before {
   display: inline-block;
   font-size: 25px;
 }
-
-
-/* .event_title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: rgb(255, 255, 255);
-  width: 100%;
-  display: inline-block;
-  font-size: 25px;
-}
-
-.event_title:after,
-.event_title:before {
-  content: "";
-  width: 50px;
-  height: 2px;
-  background: rgb(255, 255, 255);
-  margin: 0 10px;
-} */

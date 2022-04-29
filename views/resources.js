@@ -61,14 +61,15 @@ function create_resource(rec_name,rec_type,rec_stat,
     var $events = $('#events');
       $.ajax({
               type: "GET",
-              url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/'+localStorage.getItem("boundary")+'/'+localStorage.getItem("zone")+'events',
+              // url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/5d0c5216-b31f-4026-9cc8-0f1fb49466b1/zones/2/events'
+              url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/'+localStorage.getItem("boundary")+'/zones/'+localStorage.getItem("zone")+'/events',
               data: {},
               success: function(events) {
                 $.each(events, function(i, event){
                   // add all polygons to array
                   // boundary_events.push(event);
                   // add dynamic links to html list
-                  $events.append(event.name);
+                  $events.append(event.resource_name);
                 });
                 console.log($events)
                 // store polygon array to local storage

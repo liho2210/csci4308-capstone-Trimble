@@ -73,7 +73,7 @@ function get_events(){
                 // add all polygons to array
                 // boundary_events.push(event);
                 // add dynamic links to html list
-                $events.append(event.name);
+                $events.append(event.resource_name);
               });
               console.log($events)
               // store polygon array to local storage
