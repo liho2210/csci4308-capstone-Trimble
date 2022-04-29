@@ -403,7 +403,8 @@ h2:before {
 }
 
 .event_title{
-  top: 50px;
+  position: relative;
+  top: 10px;
   text-align: center;
   color: rgb(255, 255, 255);
   width: 100%;
