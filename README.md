@@ -1,5 +1,7 @@
 # GEO-FENCING
 
+URL: https://main.d1482i33jrmwwx.amplifyapp.com/index.html
+
 Developed By:
 - Henry Wang
 - Andrew McQueary
@@ -8,4 +10,4 @@ Developed By:
 - Liam Hollins
 
 
-In Association with Trimble Inc. and The University of Colorado
+*In Association with Trimble Inc. and The University of Colorado*
