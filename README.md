@@ -1,4 +1,4 @@
-# GEO-FENCING
+# GEO FENCE LIVE
 
 URL: https://main.d1482i33jrmwwx.amplifyapp.com/index.html
 
