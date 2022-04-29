@@ -1,0 +1,29 @@
+type: object
+properties:
+  date_created:
+    type: string
+    format: date-time
+    readOnly: true
+  name:
+    type: string
+    description: Resource name
+  type:
+    type: string
+    enum: [personel,material,vehicle]
+    description: Defines some of the expected form of metadata
+  state:
+    type: string
+    description: Short message describing the status of a resource for easy understanding
+  coordinates:
+    type: string
+    format: GeoJson Coordinate
+  description:
+    type: string
+    description: Brief description of resource
+  metadata:
+    type: object
+    maxItems: 10
+  last_modified:
+    type: string
+    format: date-time
+    readOnly: true

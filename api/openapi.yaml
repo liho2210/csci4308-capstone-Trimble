@@ -1,0 +1,679 @@
+openapi: 3.0.1
+info:
+  title: Trimble Cloud Geofencing
+  version: "2022-03-26T03:31:18Z"
+servers:
+- url: https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev
+paths:
+  /boundary:
+    post:
+      tags:
+        - boundary
+      summary: Create a New Boundary
+      operationId: create_boundary
+      description: The request body only requires a name, and a polygon field. The proper format for the polygon is a string of the shape "[[1,3],[1,2],[1,4]]" and must be a valid Polygon.
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid Syntax
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - polygon
+              $ref: '#/components/schemas/Boundary'
+    get:
+      tags:
+      - boundary
+      summary: Get all boundaries
+      description: Returns a list of all boundary objects
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Boundary'
+
+
+  /boundary/{boundary_id}:
+    get:
+      tags:
+      - boundary
+      summary: Get a boundary
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Boundary'
+        404:
+          description: Not Found
+    patch:
+      tags:
+      - boundary
+      summary: Update a boundary
+      description: Updates the boundary object based on what is included in the body. This method will replace the stored values with the values you include. If you include the metadata key, the metadata object will be compeletely replaced.
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Boundary'
+      responses:
+        200:
+          description: Ok
+        400:
+          description: Invalid Syntax
+        404:
+          description: Not Found
+    delete:
+      tags:
+      - boundary
+      summary: Delete a boundary
+      description: Removes boundary passed in path and its associated zones. Will not delete if resources exist that still point to this boundary.
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+        400:
+          description: All resources pointing to this boundary must be updated or deleted.
+        404:
+          description: Not Found
+  /boundaries/{boundary_id}/events:
+    get:
+      tags:
+      - event
+      summary: Get events by boundary
+      description: Returns all event pertaining to a specific boundary
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        404:
+          description: Not Found
+  /boundaries/{boundary_id}/zone/{zone_id}/events:
+    get:
+      tags:
+      - event
+      summary: Get events by boundary and zone
+      description: Returns all events pertaining to a specific zone within a boundary
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        404:
+          description: Not Found
+
+
+  /boundaries/{boundary_id}/zones:
+    post:
+      tags:
+        - zones
+      summary: Create a New Zone under a existing Boundary
+      description: Request body only requires a geojson polygon field, and zone_id. The proper format for the polygon is a string of the shape "[[1,3],[1,2],[1,4]]"
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Zone'
+        required: true
+      responses:
+        200:
+          description: OK
+        400:
+          description: Boundary does not exist
+        409:
+          description: Zone already exist
+    get:
+      tags:
+        - zones
+      summary: Get all zones under a existing boundary
+      description: Return a list of all zone objects
+      parameters:
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Zone'
+
+
+  /boundaries/{boundary_id}/zones/{zone_id}:
+    get:
+      tags:
+        - zones
+      summary: Get a single zone under a boundary
+      description: Returns a list of 1 zone objects
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Zone'
+    delete:
+      tags:
+        - zones
+      summary: Delete a zone
+      description: Remove the zone under its given boundary
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+        400:
+          description: Zone not found
+
+
+    patch:
+      tags:
+        - zones
+      summary: Update a zone
+      description: Updates the boundary object based on what is included in the body. This method will replace the stored values with the values you include.
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZonePatch'
+        required: true
+      responses:
+        200:
+          description: OK
+        412:
+          description: Precondition Failed
+        400:
+          description: Zone does not exist
+
+  /boundaries/{boundary_id}/zones/{zone_id}/resources:
+    post:
+      tags:
+        - resource
+      summary: Creates a resource
+      description: Creates a resource based on what is included in the request body
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+      requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+    get:
+      tags:
+        - resource
+      summary: Get all Resource
+      description: Retrieve all resource under boundary and zone
+      parameters:
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+
+  /boundaries/{boundary_id}/zones/{zone_id}/resources/{resource_name}:
+    get:
+      tags:
+        - resource
+      summary: Get a Resource
+      description: Retrieve a resource under boundary and zone
+      parameters:
+      - name: resource_name
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+    delete:
+      tags:
+        - resource
+      summary: Delete a resource
+      description: deletes all attributes for the resource
+      parameters:
+      - name: resource_name
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+
+
+    patch:
+      tags:
+        - resource
+      summary: Update a resource
+      description: Updates the resource object based on what is included in the body. This method will replace the stored values with the values you include.
+      parameters:
+      - name: resource_name
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zone_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: boundary_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePatch'
+      responses:
+        200:
+          description: OK
+
+components:
+  schemas:
+    Empty:
+      title: Empty Schema
+      type: object
+    Boundary:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: 54f6d866-5fec-4180-8ba8-853818d53a6a
+        name:
+          type: string
+          description: Human redable boundary name
+          example: Folsom Field
+        description:
+          type: string
+          description: Brief description of boundary's purpose
+          example: These coordinates roughly outline folsom field
+        polygon:
+          type: string
+          format: GeoJson Polygon
+          description: Bounding polygon to encapsulate a boundary, must be a valid polygon
+          example: "[[-105.268026, 40.008357], [-105.267992, 40.010473], [-105.265692, 40.010451], [-105.265626, 40.008405]]"
+        metadata:
+          type: object
+          description: Captures any additional necessary information about a boundary
+          example: {status: In Progress}
+          maxItems: 10
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
+        last_modified:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
+    Zone:
+      required:
+      - polygon
+      - zone_id
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: 54f6d866-5fec-4180-8ba8-853818d53a6a
+        zone_id:
+          type: string
+          example: "2"
+        polygon:
+          type: array
+          items:
+            type: integer
+          example: [
+            [
+                40.006,
+                -105.268
+            ],
+            [
+                40.005,
+                -105.268
+            ],
+            [
+                40.005,
+                -105.266
+            ],
+            [
+                40.006,
+               -105.266
+            ],
+            [
+                40.006,
+                -105.268
+            ]
+          ]
+        description:
+          type: string
+          description: Brief description of zone
+          example: These coordinates roughly outline Farrand Field
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
+        last_modified:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
+        metadata:
+          type: object
+          description: Captures any additional necessary information about a zone
+          example: {Manager: Henry}
+          maxItems: 10
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: "54f6d866-5fec-4180-8ba8-853818d53a6a"
+        boundary_name:
+          type: string
+          example: "Folsom Field"
+        zone_id:
+          type: string
+          example: "2"
+        resource_name:
+          type: string
+          example: "bricks"
+        description:
+          type: string
+          example: "Bricks amount changed from 500 to 50"
+        time_created:
+          type: string
+          format: date-time
+          readOnly: true
+        prev_resource_status:
+          type: string
+          example: "Waiting to be approved"
+        curr_resource_status:
+          type: string
+          example: "Waiting to be approved"
+        metadata:
+          type: object
+          description: Captures any additional necessary information about a boundary
+          example: {example: example}
+          maxItems: 10
+    ZonePatch:
+      type: object
+      properties:
+        new_boundary_id:
+          type: string
+          example: "Middle CU Project"
+        new_zone_id:
+          type: string
+          example: "1"
+        new_polygon:
+          type: array
+          items:
+            type: integer
+          example: [
+            [
+                40.006,
+                -105.268
+            ],
+            [
+                40.005,
+                -105.268
+            ],
+            [
+                40.005,
+                -105.266
+            ],
+            [
+                40.006,
+               -105.266
+            ],
+            [
+                40.006,
+                -105.268
+            ]
+          ]
+        description:
+          type: string
+          description: Brief description of zone
+          example: These coordinates roughly outline Farrand Field
+
+    Resource:
+      required:
+      - resource_name
+      - resource_type
+      - resource_status
+      - amount
+      - coordinates
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+          example: 54f6d866-5fec-4180-8ba8-853818d53a6a
+        resource_name:
+          type: string
+          description: Name of Resource
+          example: Brick
+        resource_type:
+          type: string
+          description: Type of Resource
+          example: Material
+        resource_status:
+          type: string
+          description: current status of Resource
+          example: Arrived
+        amount:
+          type: string
+          description: Number of resource
+          example: "50"
+        description:
+          type: string
+          description: Brief description of resource's purpose
+          example: Used for building walls
+        coordinates:
+          type: string
+          format: GeoJson Polygon
+          description: Coordinates of resource location in lat, long order
+          example: [40.006, -105.267]
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
+        last_modified:
+          type: string
+          format: date-time
+          readOnly: true
+          example: "2022-03-31 17:11:55.597337"
+
+    ResourcePatch:
+        type: object
+        properties:
+          id:
+            type: string
+            readOnly: true
+            example: 54f6d866-5fec-4180-8ba8-853818d53a6a
+          new_zone_id:
+            type: string
+            description: new zone id
+            example: Brick
+          new_boundary_id:
+            type: string
+            description: new boundary for resource
+            example: Brick
+          new_resource_name:
+            type: string
+            description: new Name of Resource
+            example: Brick
+          new_coordinates:
+            type: string
+            format: GeoJson Polygon
+            description: Coordinates of resource location in lat,long order
+            example: [40.006, -105.267]
+          new_resource_status:
+            type: string
+            description: New resource status
+            example: Left warehouse at noon on April 20th 2022
+          resource_type:
+            type: string
+            description: Type of Resource
+            example: Material
+          resource_status:
+            type: string
+            description: current status of Resource
+            example: Arrived
+          amount:
+            type: string
+            description: Number of resource
+            example: "50"
+          description:
+            type: string
+            description: Brief description of resource's purpose
+            example: Used for building walls

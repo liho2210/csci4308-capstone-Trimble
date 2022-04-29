@@ -1,0 +1,19 @@
+post:
+  tags:
+    - Boundary
+  summary: Create Boundary
+  operationId: create_boundary
+  description: Creates a Boundary object give all necessary data is present.
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Invalid Syntax
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+          - name
+          - polygon
+          $ref: ../components/schemas/Boundary.yaml

@@ -1,0 +1,18 @@
+post:
+  tags:
+    - Event
+  summary: Create Event
+  operationId: create_event
+  description: Creates a Event object give all necessary data is present.
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Invalid Syntax
+  requestBody:
+    content:
+      application/json:
+        schema:
+          required:
+          - name
+          $ref: ../components/schemas/Event.yaml

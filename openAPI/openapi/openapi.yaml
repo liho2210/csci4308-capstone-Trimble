@@ -1,0 +1,46 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Trimble Cloud Geofencing
+  termsOfService: 'https://example.com/terms/'
+  contact:
+    email: contact@example.com
+    url: 'http://example.com/contact'
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  x-logo:
+    url: 'https://redocly.github.io/openapi-template/logo.png'
+  description:
+    $ref: ./info-description.md
+externalDocs:
+  description: Find out how to create a GitHub repo for your OpenAPI definition.
+  url: 'https://github.com/Rebilly/generator-openapi-repo'
+tags:
+  - name: Boundary
+    description: Object to define each Geofencing zone or subzone.
+  - name: Resource
+    description: Tangible real world assets to be tracked and monitored.
+  - name: Event
+    description: Log of all changes to resources and zones.
+servers:
+  - url: 'http://example.com/api/v1'
+  - url: 'https://example.com/api/v1'
+paths:
+  /boundary:
+    $ref: 'paths/boundary.yaml'
+  /boundary/{boundary_id}:
+    $ref: 'paths/boundary@{boundary_id}.yaml'
+  /boundary/{boundary_id}/resource:
+    $ref: 'paths/boundary@{boundary_id}@resource.yaml'
+  /boundary/{boundary_id}/event:
+    $ref: 'paths/boundary@{boundary_id}@event.yaml'
+  /resource:
+    $ref: 'paths/resource.yaml'
+  /resource/{resource_id}:
+    $ref: 'paths/resource@{resource_id}.yaml'
+  /event:
+    $ref: 'paths/event.yaml'
+  /event/{event_id}:
+    $ref: 'paths/event@{event_id}.yaml'
+# components:

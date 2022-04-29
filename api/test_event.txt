@@ -1,0 +1,26 @@
+Example Boundary Posts:
+
+{
+  "name": "Folsom Field Project",
+  "description": "This polygon roughly encapsulates folsom field",
+  "polygon": "[[-105.268026, 40.008357], [-105.267992, 40.010473], [-105.265692, 40.010451], [-105.265626, 40.008405]]",
+  "metadata": {
+    "status": "in progress"
+  }
+}
+
+{
+  "name": "Engineering Center and Quad",
+  "description" : "This covers the engineering center and the engineering quad",
+  "polygon" : "[[-105.265228, 40.007990],[ -105.261485, 40.008063],[-105.261461, 40.006337],[-105.265380, 40.006390]]"
+}
+
+
+Example Zone Posts:
+
+{
+  "zone_id": "CSCI Wing",
+  "description": "Area with all computer science offices/storage",
+  "boundary_id": "0df8b723-0848-463e-bc4d-6d0e44da431f",
+  "polygon": "[[-105.265228, 40.00799],[-105.26538, 40.00639],[-105.261461, 40.006337],[-105.261485, 40.008063]]"
+}

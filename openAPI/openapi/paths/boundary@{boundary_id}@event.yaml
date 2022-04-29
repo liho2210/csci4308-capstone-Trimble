@@ -1,0 +1,26 @@
+post:
+  tags:
+    - Boundary
+  summary: Add Event
+  operationId: add_event_to_boundary
+  description: Adds a single event to a boundary's log of events
+  parameters:
+    - name: boundary_id
+      in: path
+      description: ID of the boundary you are trying affect
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: OK
+    '400':
+      description: Invalid Syntax
+    '404':
+      description: Not found
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: integer
+          description: ID of event to add to boundary

@@ -1,0 +1,38 @@
+type: object
+properties:
+  id:
+    type: string
+    readOnly: true
+  name:
+    type: string
+    description: Human redable boundary name
+  description:
+    type: string
+    description: Brief description of boundary's purpose
+  polygon:
+    type: string
+    format: GeoJson Polygon
+    description: Bounding polygon to encapsulate a boundary, must be a valid polygon
+  resource_ids:
+    type: array
+    description: IDs of resources belonging to a boundary
+    items:
+      type: integer
+  metadata:
+    type: object
+    description: Captures any additional necessary information about a boundary
+    maxItems: 10
+  event_log:
+    type: array
+    description: IDs of all event objects that describe a boundary's history
+    items:
+      type: integer
+    readOnly: true
+  date_created:
+    type: string
+    format: date-time
+    readOnly: true
+  last_modified:
+    type: string
+    format: date-time
+    readOnly: true

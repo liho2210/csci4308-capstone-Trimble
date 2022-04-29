@@ -1,0 +1,23 @@
+get:
+  summary: Fetch Event
+  operationId: get_event
+  tags:
+    - Event
+  parameters:
+    - name: event_id
+      in: path
+      description: ID of the event you are trying to fetch
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Event.yaml
+    '400':
+      description: Path argument is not an integer
+    '404':
+      description: Not found
