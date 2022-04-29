@@ -69,7 +69,12 @@ function create_resource(rec_name,rec_type,rec_stat,
                   // add all polygons to array
                   // boundary_events.push(event);
                   // add dynamic links to html list
-                  $events.append(event.resource_name);
+                  // $events.append('<ul>'+event.resource_name+'<br/>'+
+                  //   event.curr_resource_status+'<br/>'+
+                  //   event.prev_resource_status+'</ul>'+'<br/>'+'<hr/>');
+                  $events.append('<b>'+event.resource_name+": "+
+                    event.prev_resource_status+" ---> "+
+                    event.curr_resource_status+'</b>'+'<br/>');
                 });
                 console.log($events)
                 // store polygon array to local storage

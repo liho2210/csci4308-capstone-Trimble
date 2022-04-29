@@ -392,22 +392,41 @@ h2:before {
 }
 
 .events {
-  height: 35%;
-  width: 250px;
-  position: absolute;
+  height: 30%;
+  width: 300px;
+  position: fixed;
   /* z-index: 1; */
-  bottom: 0;
+  top: 0;
   right: 0;
-  background-color: rgba(31, 31, 31, 0.492);
+  background-color: rgb(31, 31, 31);
   /* overflow-x: hidden; */
+  overflow-y:auto
 }
 
 .event_title{
-  position: relative;
-  top: 10px;
+  z-index: 10;
+  /* background: inherit; */
+  top:0;
+  position: sticky;
+  /* top: 10px; */
   text-align: center;
   color: rgb(255, 255, 255);
   width: 100%;
   display: inline-block;
   font-size: 25px;
+  background: inherit;
+}
+
+.event_list{
+  position: relative;
+  /* top: 5px; */
+  /* right: 25px; */
+  color: rgb(255, 255, 255);
+  padding-right: 50px;
+  /* padding-top: 10px; */
+  font-size: 12px;
+  /* padding-bottom: 20px; */
+  width: 100;
+  z-index: 5;
+  overflow: auto;
 }
