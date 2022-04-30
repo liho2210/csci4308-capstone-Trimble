@@ -5,6 +5,7 @@ var bound_polys = [];
 $(function() {
   // html list to store href links and onclick functionality
   var $boundaries = $('#boundaries');
+  // var $bound_del = $('#bound_del');
   $.ajax({
           type: "GET",
           url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary',
@@ -15,6 +16,7 @@ $(function() {
               bound_polys.push(boundary.polygon);
               // add dynamic links to html list
               $boundaries.append(`<a href="zones.html" onclick="localStorage.setItem('boundary', '${boundary.id}'); localStorage.setItem('bound_poly', '${boundary.polygon}')";>${boundary.name}</a>`);
+              // $bound_del.append(`<a href="boundaries.html" onclick="delete_bound('${boundary.id}')";>${boundary.name}</a> <br/>`)
             });
             // store polygon array to local storage
             localStorage.setItem("bound_polys", JSON.stringify(bound_polys));
@@ -51,4 +53,20 @@ $.ajax({
   dataType: "json"
 });
 }
+
+function delete_bound(){
+  $.ajax({
+    type: "DELETE",
+    // url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary/"+bound_id,
+    url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary/f6db9040-25cf-411e-babf-aa3da693ba86",
+    success: function() {
+      console.log('success')
+      // window.location.reload();
+    },
+    error: function (error) {
+        console.log(`Error ${error}`);
+    },
+    // dataType: "json"
+  });
+  }
 

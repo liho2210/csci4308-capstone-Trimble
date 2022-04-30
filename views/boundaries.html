@@ -30,6 +30,18 @@
             height="48"
           />
         </div>
+        <!-- <div class="add_button">
+          <img
+            data-toggle="modal"
+            data-target="#myModal3"
+            src="img/icons8-minus-96.png"
+            width="48"
+            height="48"
+          />
+        </div> -->
+        <img src="img/icons8-minus-96.png" onclick="delete_bound()">
+
+        </img>
         <hr />
       </div>
 
@@ -98,6 +110,33 @@
                 Save
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="myModal3" role="dialog" data-backdrop="">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title">Delete Boundary:</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="list2">
+              <ul id="bound_del"></ul>
+            </div>
+          </div>
+
+          <div class="modal-body"></div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
           </div>
         </div>
       </div>
