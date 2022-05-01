@@ -30,11 +30,18 @@
             width="48"
             height="48"
           />
-          <!-- onclick="create_resource('brick', 'material', 'arrived', '50', 'building', '[-105.267,40.006]')" -->
-          <!-- onclick="create_resource()" -->
         </div>
+        <div class="add_button">
+          <img
+            data-toggle="modal"
+            data-target="#myModal3"
+            src="img/icons8-minus-96.png"
+            width="48"
+            height="48"
+          />
+        </div>
+        <hr />
       </div>
-      <hr />
 
       <div class="container_button">
         <div class="list">
@@ -173,6 +180,33 @@
                 Save
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="myModal3" role="dialog" data-backdrop="">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title">Delete Resource:</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="list2">
+              <ul id="res_del"></ul>
+            </div>
+          </div>
+
+          <div class="modal-body"></div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
           </div>
         </div>
       </div>

@@ -31,8 +31,17 @@
             height="48"
           />
         </div>
+        <div class="add_button">
+          <img
+            data-toggle="modal"
+            data-target="#myModal3"
+            src="img/icons8-minus-96.png"
+            width="48"
+            height="48"
+          />
+        </div>
+        <hr />
       </div>
-      <hr />
 
       <div class="container_button">
         <div class="list">
@@ -109,6 +118,33 @@
         <hr />
       </b>
       <ul id="events" class="event_list" style="list-style-type: disc"></ul>
+    </div>
+    <div class="modal" id="myModal3" role="dialog" data-backdrop="">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title">Delete Zone:</h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="list2">
+              <ul id="zone_del"></ul>
+            </div>
+          </div>
+
+          <div class="modal-body"></div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="zones.js"></script>
     <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>

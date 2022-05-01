@@ -6,6 +6,7 @@ var zone_polys = [];
 $(function() {
   // html list to store href links and onclick functionality
   var $zones = $('#zones');
+  var $zone_del = $('#zone_del');
   $.ajax({
           type: "GET",
           url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/'+localStorage.getItem("boundary")+'/zones',
@@ -16,6 +17,7 @@ $(function() {
               zone_polys.push(zone.polygon);
               // add dynamic links to html list
               $zones.append(`<a href="resources.html" onclick="localStorage.setItem('zone', '${zone.zone_id}'); localStorage.setItem('zone_poly', '${zone.polygon}')";>${zone.zone_id}</a>`);
+              $zone_del.append(`<a href="zones.html" onclick="delete_zone('${zone.zone_id}')";>${zone.zone_id}</a> <br/>`)
             });
             // store polygon array to local storage
             localStorage.setItem('zone_polys', JSON.stringify(zone_polys));
@@ -89,3 +91,18 @@ function get_events(){
             },
     });
   }
+
+function delete_zone(zone_id){
+  $.ajax({
+    type: "DELETE",
+    url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/'+localStorage.getItem("boundary")+'/zones/'+zone_id,
+    success: function() {
+      console.log('success')
+      // window.location.reload();
+    },
+    error: function (error) {
+        console.log(`Error ${error}`);
+    },
+    // dataType: "json"
+  });
+}
