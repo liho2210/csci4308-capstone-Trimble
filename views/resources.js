@@ -49,7 +49,7 @@ function create_resource(rec_name,rec_type,rec_stat,
         ${rec_lon}] 
       ]
     }`,
-    success: function(resources) {
+    success: function() {
       console.log('success')
     },
     error: function (error) {
@@ -68,24 +68,15 @@ function get_events(){
       data: {},
       success: function(events) {
         $.each(events, function(i, event){
-          // add all polygons to array
-          // boundary_events.push(event);
-          // add dynamic links to html list
-          // $events.append('<ul>'+event.resource_name+'<br/>'+
-          //   event.curr_resource_status+'<br/>'+
-          //   event.prev_resource_status+'</ul>'+'<br/>'+'<hr/>');
           $events.append('<b>'+event.resource_name+": "+
             event.prev_resource_status+" ---> "+
             event.curr_resource_status+'</b>'+'<br/>');
         });
         console.log($events)
-        // store polygon array to local storage
-        // localStorage.setItem('bound_events', JSON.stringify(boundary_events));
       },
       // Error handling 
       error: function (error) {
           console.log(`Error ${error}`);
-          // localStorage.setItem('zone_polys', JSON.stringify(zone_polys));
       },
   });
 }
@@ -96,12 +87,10 @@ function delete_resource(resource_name){
     url: 'https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundaries/'+localStorage.getItem("boundary")+'/zones/'+localStorage.getItem("zone")+"/"+resource_name,
     success: function() {
       console.log('success')
-      // window.location.reload();
     },
     error: function (error) {
         console.log(`Error ${error}`);
     },
-    // dataType: "json"
   });
   }
 

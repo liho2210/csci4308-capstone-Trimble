@@ -73,7 +73,6 @@
 
             <div class="modal-body">
               <label for="project">Boundary Name:</label>
-              <!-- <select name="project" id="project"></select> -->
               <input type="text" name="name" id="bound_name" required />
             </div>
 
@@ -86,7 +85,6 @@
               <label for="project">Polygon:</label>
               <input type="text" name="polygon" id="bound_polygon" required />
             </div>
-            <!-- 40.0080° N, 105.2675° W -->
 
             <div class="modal-body"></div>
 
@@ -167,8 +165,6 @@
       L.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
           'Tiles by <a href="https://mapc.org">MAPC</a>, Data by <a href="https://mass.gov/mgis">MassGIS</a>',
-        // attribution:
-        //   '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 17,
         minZoom: 9,
       }).addTo(map);

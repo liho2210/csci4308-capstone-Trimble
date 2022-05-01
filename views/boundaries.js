@@ -43,7 +43,7 @@ $.ajax({
       "status": "in progress"
     }
   }`,
-  success: function(boundaries) {
+  success: function() {
     console.log('success')
     window.location.reload();
   },
@@ -60,12 +60,10 @@ function delete_bound(bound_id){
     url: "https://cy08574un0.execute-api.us-east-1.amazonaws.com/dev/boundary/"+bound_id,
     success: function() {
       console.log('success')
-      // window.location.reload();
     },
     error: function (error) {
         console.log(`Error ${error}`);
     },
-    // dataType: "json"
   });
   }
 
